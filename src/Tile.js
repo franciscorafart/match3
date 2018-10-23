@@ -8,7 +8,10 @@ class Tile extends Component {
             red: 255,
             green: 255,
             blue: 255,
+            selected: false
         }
+
+        this.selected = this.selected.bind(this)
     }
 
     componentDidMount(){
@@ -21,16 +24,29 @@ class Tile extends Component {
         })
     }
 
+    selected(e){
+        let selectedNow = this.state.selected
+        this.setState({selected: !selectedNow})
+
+        //Trigger move function
+    }
+
     render() {
+        let background;
+        if (this.state.selected)
+            background = "rgb("+String(78)+","+String(92)+","+String(11)+")"
+        else
+            background = "rgb("+this.state.red+","+this.state.green+","+this.state.blue+")"
+
         let divStyle = {
             width: this.props.tilewidth-2,
             height: this.props.tileheight-2,
             border: '1px solid red',
             display: 'block',
-            background: "rgb("+this.state.red+","+this.state.green+","+this.state.blue+")",
+            background: background,
         }
         return (
-            <div className="tile" style={divStyle}>
+            <div className="tile" style={divStyle} onClick={this.selected}>
 
             </div>
         );

@@ -55,11 +55,9 @@ class Level extends Component {
                     tiles[i][j].type = this.getRandomTile()
                 }
             }
-            console.log('pre resolve Clusters tiles:', tiles)
+
             tiles = this.resolveClusters(tiles)
-            console.log('passes resolve Clusters tiles:', tiles)
             let moves = this.findMoves(tiles)
-            // console.log('moves', moves)
 
             if (moves.length > 0)
                 done = true
@@ -258,6 +256,11 @@ class Level extends Component {
             }
         }
         return moves
+    }
+
+    play(){
+        //1. Evaluate if are
+        console.log('play')
     }
 
     render() {
