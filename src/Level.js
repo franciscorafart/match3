@@ -138,7 +138,7 @@ class Level extends Component {
                 if (j == this.state.rows-1){
                     checkcluster = true;
                 } else {
-                    if (tiles[i][j].type == tiles[i][j+1].type && tiles[i][j].type != 1){
+                    if (tiles[i][j].type == tiles[i][j+1].type && tiles[i][j].type != -1){
                         matchlength+=1;
                     } else{
                         checkcluster=true;
