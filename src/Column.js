@@ -29,6 +29,8 @@ class Column extends Component {
                                     row={idx}
                                     getMyColor={this.props.getMyColor}
                                     key={idx}
+                                    addSelected={this.props.addSelected}
+                                    selectedCount={this.props.selectedCount}
                                 />
                         )
                     }

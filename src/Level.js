@@ -14,7 +14,7 @@ class Level extends Component {
             tilewidth: 40,
             tileheight: 40,
             tiles: [],
-            selectedtile:{ selected: false, column: 0, row: 0 }
+            selectedtiles:[]
         }
 
         this.getRandomTile = this.getRandomTile.bind(this)
@@ -27,6 +27,7 @@ class Level extends Component {
         this.shiftTiles = this.shiftTiles.bind(this)
         this.swap = this.swap.bind(this)
         this.findMoves = this.findMoves.bind(this)
+        this.addSelected = this.addSelected.bind(this)
     }
 
     getRandomTile(){
@@ -258,13 +259,31 @@ class Level extends Component {
         return moves
     }
 
-    play(){
-        //1. Evaluate if are
-        console.log('play')
+    addSelected(col, row, addBool){
+        console.log('col: ', col, 'row: ', row, 'addBool: ', addBool)
+
+        let all_selected = this.state.selectedtiles.slice() //new copy of array
+        let selectedCount = all_selected.length
+        console.log('selectedCount in Level.js: ',selectedCount)
+        let selected = {column:col,row:row}
+
+        if (addBool && selectedCount<2){
+            all_selected.push(selected)
+        } else if (!addBool && selectedCount>0){
+            for (let i=0; i<selectedCount; i++){
+                console.log('i: ',i)
+                if (this.state.selectedtiles[i].column===col && this.state.selectedtiles[i].row===row)
+                    all_selected.splice(i,1)
+            }
+        }
+
+        this.setState({selectedtiles: all_selected})
     }
 
     render() {
-        console.log('this.state.tiles', this.state.tiles)
+        // console.log('this.state.tiles', this.state.tiles)
+        console.log('selected: ',this.state.selectedtiles)
+
         let divStyle = {
             width: this.state.columns*this.state.tilewidth,
             height: this.state.rows*this.state.tileheight,
@@ -287,6 +306,8 @@ class Level extends Component {
                                 tileheight={this.state.tileheight}
                                 getMyColor={this.getMyColor}
                                 key={idx}
+                                addSelected={this.addSelected}
+                                selectedCount={this.state.selectedtiles.length}
                             />
                         )
                     }

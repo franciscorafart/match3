@@ -25,10 +25,26 @@ class Tile extends Component {
     }
 
     selected(e){
-        let selectedNow = this.state.selected
-        this.setState({selected: !selectedNow})
+        let selectedPrevious = this.state.selected
 
-        //Trigger move function
+        if (this.props.selectedCount<2){
+            if(!selectedPrevious){//if user selected
+                this.setState({selected: !selectedPrevious})
+                this.props.addSelected(this.props.col, this.props.row, true)
+            } else {
+                this.setState({selected: !selectedPrevious})
+                this.props.addSelected(this.props.col, this.props.row, false)
+            }
+
+        } else {
+            if (selectedPrevious){
+                this.setState({selected: !selectedPrevious})
+                this.props.addSelected(this.props.col, this.props.row, false)
+            } else {
+                console.log('Only 2 selections allowed!')
+            }
+        }
+
     }
 
     render() {
