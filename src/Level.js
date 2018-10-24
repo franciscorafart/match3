@@ -240,7 +240,7 @@ class Level extends Component {
                 }
             }
         }
-        // clusters = []
+
         //check vertical swaps and moves
         for (let i=0; i<this.state.rows; i++){
             for (var j=0; j<this.state.columns-1; j++){
@@ -260,30 +260,28 @@ class Level extends Component {
     }
 
     addSelected(col, row, addBool){
-        console.log('col: ', col, 'row: ', row, 'addBool: ', addBool)
-
         let all_selected = this.state.selectedtiles.slice() //new copy of array
         let selectedCount = all_selected.length
-        console.log('selectedCount in Level.js: ',selectedCount)
         let selected = {column:col,row:row}
 
         if (addBool && selectedCount<2){
             all_selected.push(selected)
         } else if (!addBool && selectedCount>0){
             for (let i=0; i<selectedCount; i++){
-                console.log('i: ',i)
                 if (this.state.selectedtiles[i].column===col && this.state.selectedtiles[i].row===row)
                     all_selected.splice(i,1)
             }
         }
 
         this.setState({selectedtiles: all_selected})
+
+        //TODO:
+        //Next: if adjacent, swap both
+        //See if move removeClusters, is so change, if not leave the same
+        //
     }
 
-    render() {
-        // console.log('this.state.tiles', this.state.tiles)
-        console.log('selected: ',this.state.selectedtiles)
-
+    render(){
         let divStyle = {
             width: this.state.columns*this.state.tilewidth,
             height: this.state.rows*this.state.tileheight,
