@@ -278,7 +278,6 @@ class Level extends Component {
         //TODO:
         //Next: if adjacent, swap both
         //See if move removeClusters, is so change, if not leave the same
-        //
     }
 
     render(){
