@@ -23,6 +23,10 @@ class Tile extends Component {
             blue: color[2]
         })
     }
+    componentDidUpdate(){
+        console.log('TileUpdated')
+
+    }
 
     selected(e){
         let selectedPrevious = this.state.selected
@@ -48,18 +52,16 @@ class Tile extends Component {
     }
 
     render() {
-        let background;
+        let border = '1px solid black';
         if (this.state.selected)
-            background = "rgb("+String(78)+","+String(92)+","+String(11)+")"
-        else
-            background = "rgb("+this.state.red+","+this.state.green+","+this.state.blue+")"
+            border = '1px solid red'
 
         let divStyle = {
             width: this.props.tilewidth-2,
             height: this.props.tileheight-2,
-            border: '1px solid red',
+            border: border,
             display: 'block',
-            background: background,
+            background: "rgb("+this.state.red+","+this.state.green+","+this.state.blue+")",
         }
         return (
             <div className="tile" style={divStyle} onClick={this.selected}>

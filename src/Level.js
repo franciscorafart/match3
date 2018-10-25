@@ -28,6 +28,12 @@ class Level extends Component {
         this.swap = this.swap.bind(this)
         this.findMoves = this.findMoves.bind(this)
         this.addSelected = this.addSelected.bind(this)
+        this.playMove = this.playMove.bind(this)
+        this.deepClone = this.deepClone.bind(this)
+    }
+
+    componentDidUpdate(){
+        console.log('component updated')
     }
 
     getRandomTile(){
@@ -84,14 +90,14 @@ class Level extends Component {
     resolveClusters(tiles){
         let clusters = this.findClusters(tiles)
         let count = 0
-        while (clusters.length>0 && count<1000){
-            console.log('clusters',clusters, 'count', count)
+        while (clusters.length>0){
+            // console.log('clusters',clusters, 'count', count)
             tiles = this.removeClusters(tiles, clusters)
             tiles = this.shiftTiles(tiles)
             clusters = this.findClusters(tiles)
             count+=1
         }
-
+        console.log('Clean Tiles',tiles, 'count', count)
         return tiles
     }
 
@@ -188,8 +194,6 @@ class Level extends Component {
             }
         }
 
-        //TODO: sould I do here or pass as a result?
-        // this.setState({tiles: tiles})
         return tiles
     }
 
@@ -214,11 +218,12 @@ class Level extends Component {
 
     //swap to tiles in the level
     swap(x1, y1, x2, y2, tiles){
-        let typeswap = tiles[x1][y1].type;
-        tiles[x1][y1].type = tiles[x2][y2].type
-        tiles[x2][y2].type = typeswap;
+        let tilescp = tiles
+        let typeswap = tilescp[x1][y1].type;
+        tilescp[x1][y1].type = tilescp[x2][y2].type
+        tilescp[x2][y2].type = typeswap;
 
-        return tiles
+        return tilescp
     }
 
     findMoves(tiles){
@@ -260,27 +265,74 @@ class Level extends Component {
     }
 
     addSelected(col, row, addBool){
-        let all_selected = this.state.selectedtiles.slice() //new copy of array
+        let all_selected = this.state.selectedtiles.slice() //new copy of array (what about object?)
         let selectedCount = all_selected.length
         let selected = {column:col,row:row}
 
-        if (addBool && selectedCount<2){
-            all_selected.push(selected)
-        } else if (!addBool && selectedCount>0){
+        if (!addBool && selectedCount>0){
             for (let i=0; i<selectedCount; i++){
                 if (this.state.selectedtiles[i].column===col && this.state.selectedtiles[i].row===row)
                     all_selected.splice(i,1)
             }
+            this.setState({selectedtiles: all_selected})
+        } else if (addBool){
+            if (selectedCount<2){
+                all_selected.push(selected)
+                this.setState({selectedtiles: all_selected})
+            }
+            if (selectedCount==1){
+                //play the move
+                this.playMove(all_selected)
+            }
         }
 
-        this.setState({selectedtiles: all_selected})
+        // this.setState({selectedtiles: all_selected})
 
         //TODO:
         //Next: if adjacent, swap both
         //See if move removeClusters, is so change, if not leave the same
+        // this.playMove()
+    }
+
+    playMove(selected){
+        // let selected = this.state.selectedtiles
+        if (selected.length==2){ //TODO: check if adjacent
+            console.log('play move')
+            let c1 = selected[0].column, r1 = selected[0].row, c2 = selected[1].column, r2 = selected[1].row;
+            console.log('two selected = (',c1,',',r1,')','(',c2,',',r2,')')
+            let tiles = this.state.tiles
+            let tilesCopy = this.deepClone(tiles) //new array
+
+            // tilesCopy = this.resolveClusters(this.swap(c1, r1, c2, r2, tilesCopy))
+            tilesCopy = this.swap(c1,r1,c2,r2,tilesCopy)
+
+            console.log('tilesCopy',tilesCopy)
+            console.log('tiles', tiles)
+            // if (this.arraysEqual(tiles, tilesCopy))
+            //     return tiles
+            // else
+            // return tilesCopy
+            this.setState({selectedtiles:[], tiles: tilesCopy})
+            console.log('finished playing')
+        }
+    }
+
+    deepClone(arr){
+        let res = []
+        for (let i=0;i<arr.length;i++){
+            let resLocal = []
+            let subArr = arr[i].concat()
+            for (let j=0; j<subArr.length; j++){
+                let value = subArr[j]
+                resLocal.push(value)
+            }
+            res.push(resLocal)
+        }
+        return res
     }
 
     render(){
+        //re-render
         let divStyle = {
             width: this.state.columns*this.state.tilewidth,
             height: this.state.rows*this.state.tileheight,
