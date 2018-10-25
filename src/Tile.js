@@ -5,24 +5,21 @@ class Tile extends Component {
         super(props)
 
         this.state = {
-            red: 255,
-            green: 255,
-            blue: 255,
             selected: false
         }
 
         this.selected = this.selected.bind(this)
     }
 
-    componentDidMount(){
-        let color = this.props.getMyColor(this.props.col, this.props.row)
-
-        this.setState({
-            red: color[0],
-            green: color[1],
-            blue: color[2]
-        })
-    }
+    // componentDidMount(){
+    //     // let color = this.props.getMyColor(this.props.col, this.props.row)
+    //     let color = this.props.myColor
+    //     this.setState({
+    //         red: color[0],
+    //         green: color[1],
+    //         blue: color[2]
+    //     })
+    // }
     componentDidUpdate(){
         console.log('TileUpdated')
 
@@ -52,6 +49,12 @@ class Tile extends Component {
     }
 
     render() {
+        console.log('rendering tile')
+
+        let red = this.props.myColor[0]
+        let green = this.props.myColor[1]
+        let blue = this.props.myColor[2]
+
         let border = '1px solid black';
         if (this.state.selected)
             border = '1px solid red'
@@ -61,7 +64,7 @@ class Tile extends Component {
             height: this.props.tileheight-2,
             border: border,
             display: 'block',
-            background: "rgb("+this.state.red+","+this.state.green+","+this.state.blue+")",
+            background: "rgb("+red+","+green+","+blue+")",
         }
         return (
             <div className="tile" style={divStyle} onClick={this.selected}>

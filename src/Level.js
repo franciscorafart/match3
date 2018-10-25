@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import funcs from './resources/functions';
-import Column from './Column'
+// import Column from './Column'
+import Tile from './Tile'
 
 class Level extends Component {
     constructor(props){
@@ -303,8 +304,8 @@ class Level extends Component {
             let tiles = this.state.tiles
             let tilesCopy = this.deepClone(tiles) //new array
 
-            // tilesCopy = this.resolveClusters(this.swap(c1, r1, c2, r2, tilesCopy))
-            tilesCopy = this.swap(c1,r1,c2,r2,tilesCopy)
+            tilesCopy = this.resolveClusters(this.swap(c1, r1, c2, r2, tilesCopy))
+            // tilesCopy = this.swap(c1,r1,c2,r2,tilesCopy)
 
             console.log('tilesCopy',tilesCopy)
             console.log('tiles', tiles)
@@ -332,11 +333,15 @@ class Level extends Component {
     }
 
     render(){
+        console.log('rendering Levesl')
         //re-render
         let divStyle = {
             width: this.state.columns*this.state.tilewidth,
             height: this.state.rows*this.state.tileheight,
             border: '1px solid black',
+        }
+        let colDivStyle = {
+            float: 'left'
         }
 
         return (
@@ -348,16 +353,27 @@ class Level extends Component {
                 >
                     {
                         this.state.tiles.map(
-                            (column, idx) => <Column
-                                column={column}
-                                colNum={idx}
-                                tilewidth={this.state.tilewidth}
-                                tileheight={this.state.tileheight}
-                                getMyColor={this.getMyColor}
-                                key={idx}
-                                addSelected={this.addSelected}
-                                selectedCount={this.state.selectedtiles.length}
-                            />
+                            (column, colIdx) =>
+                            <div
+                                className="colum"
+                                style={colDivStyle}
+                            >
+                                {
+                                    column.map(
+                                        (row, rowIdx) =>
+                                            <Tile
+                                                tilewidth={this.state.tilewidth}
+                                                tileheight={this.state.tileheight}
+                                                col={colIdx}
+                                                row={rowIdx}
+                                                myColor={this.getMyColor(colIdx, rowIdx)}
+                                                // key={idx}
+                                                addSelected={this.addSelected}
+                                                selectedCount={this.state.selectedtiles.length}
+                                            />
+                                    )
+                                }
+                            </div>
                         )
                     }
                 </div>
