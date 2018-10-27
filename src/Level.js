@@ -61,10 +61,8 @@ class Level extends Component {
 
         while(!done){
             for (let i=0; i<this.state.columns;i++){
-                // let tiles[i]=[]
                 for (let j=0; j<this.state.rows; j++){
                     locTiles = locTiles.setIn([i,j,'type'], this.getRandomTile())
-                    // tiles[i][j].type = this.getRandomTile()
                 }
             }
             console.log('Gets here 1')
@@ -77,7 +75,7 @@ class Level extends Component {
                 done = true
         }
 
-        return List(locTiles)
+        return locTiles
     }
 
     initializeLevel(){
@@ -115,8 +113,6 @@ class Level extends Component {
 
         }
         console.log('Clean Tiles',locTiles, 'count', count)
-
-
         return locTiles
     }
 
@@ -222,7 +218,7 @@ class Level extends Component {
             }
         }
 
-        return tiles
+        return locTiles
     }
 
     shiftTiles(tiles){
