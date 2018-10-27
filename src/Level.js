@@ -45,10 +45,8 @@ class Level extends Component {
 
         for (let i=0; i<this.state.columns;i++){
             tiles = tiles.set(i, List([]))
-            // tiles[i] = []
             for (let j=0; j<this.state.rows; j++){
                 tiles = tiles.setIn([i,j], Map({type: 0, shifter: 0}))
-                // tiles[i][j] = {type: 0, shifter: 0}
             }
         }
 
@@ -101,7 +99,6 @@ class Level extends Component {
         let count = 0
 
         while (clusters.length>0 || count<1000){
-            // console.log('clusters',clusters, 'count', count)
             locTiles = this.removeClusters(locTiles, clusters)
             locTiles = this.shiftTiles(locTiles)
             clusters = this.findClusters(locTiles)
@@ -130,7 +127,6 @@ class Level extends Component {
                 } else {
                     //check type of next tile
                     if (tiles.getIn([i,j,'type']) == tiles.getIn([i+1,j,'type']) && tiles.getIn([i, j, 'type'])!=1){
-                    // if (tiles[i][j].type == tiles[i+1][j].type && tiles[i][j].type != -1){
                             //if same type increase matchlength
                             matchlength += 1;
                         } else {
@@ -160,7 +156,6 @@ class Level extends Component {
                     checkcluster = true;
                 } else {
                     if (tiles.getIn([i,j,'type']) == tiles.getIn([i,j+1,'type']) && tiles.getIn([i,j,'type']) != -1){
-                    // if (tiles[i][j].type == tiles[i][j+1].type && tiles[i][j].type != -1){
                         matchlength+=1;
                     } else{
                         checkcluster=true;
@@ -191,13 +186,11 @@ class Level extends Component {
                 let y = c.row
                 for (let x=c.column; x<c.column+c.length; x++){
                     locTiles = locTiles.setIn([y,x,'type'], -1)
-                    // tiles[y][x].type = -1
                 }
             } else {
                 let x = c.column
                 for (let y=c.row; y<c.row+c.length; y++){
                     locTiles = locTiles.setIn([y,x,'type'], -1)
-                    // tiles[y][x].type = -1
                 }
             }
         }
@@ -207,13 +200,10 @@ class Level extends Component {
             let shift = 0;
             for (let j=this.state.rows-1; j>=0; j--){
                 if (locTiles.getIn([i,j,'type']) == -1){
-                // if (tiles[i][j].type == -1){
                     shift ++;
                     locTiles = locTiles.setIn([i,j, 'shifter'], 0)
-                    // tiles[i][j].shifter = 0;
                 } else {
                     locTiles = locTiles.setIn([i,j, 'shifter'], shift)
-                    // tiles[i][j].shifter = shift
                 }
             }
         }
@@ -228,21 +218,16 @@ class Level extends Component {
         for (let i=0; i<this.state.columns; i++) {
             for (let j=this.state.rows-1; j>=0; j--){
                 if (locTiles.getIn([i,j,'type']) == -1){
-                // if (tiles[i][j].type == -1){
                     locTiles = locTiles.setIn([i,j,'type'], this.getRandomTile())
-                    // tiles[i][j].type = this.getRandomTile();
                 } else {
                     let shift = locTiles.getIn([i,j,'shifter'])
-                    // let shift = tiles[i][j].shifter;
                     if (shift > 0){
                         locTiles = this.swap(i,j,i,j+shift, locTiles)
-                        // tiles = this.swap(i,j,i,j+shift, tiles)
                     }
                 }
 
                 //Reset shift
                 locTiles = locTiles.setIn([i,j,'shifter'], 0)
-                // tiles[i][j].shifter = 0;
             }
         }
         return locTiles
@@ -252,15 +237,12 @@ class Level extends Component {
     swap(x1, y1, x2, y2, tiles){
         let tilescp = tiles
         let typeswap = tilescp.getIn([x1, y1, 'type']);
-        // let typeswap = tilescp[x1][y1].type;
 
         let tilecp2Type = tilescp.getIn([x2, y2, 'type']);
 
         tilescp = tilescp.setIn([x1,y1,'type'], tilecp2Type);
-        // tilescp[x1][y1].type = tilescp[x2][y2].type
 
         tilescp = tilescp.setIn([x2,y2,'type'], typeswap);
-        // tilescp[x2][y2].type = typeswap;
 
         return tilescp
     }
@@ -340,7 +322,6 @@ class Level extends Component {
             let tiles = this.state.tiles
 
             let tilesCopy = this.resolveClusters(this.swap(c1, r1, c2, r2, tiles))
-            // tilesCopy = this.swap(c1,r1,c2,r2,tilesCopy)
 
             // console.log('tilesCopy',tilesCopy)
             // console.log('tiles', tiles)
