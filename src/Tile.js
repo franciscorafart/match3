@@ -22,7 +22,6 @@ class Tile extends Component {
     // }
     componentDidUpdate(){
         console.log('TileUpdated')
-
     }
 
     selected(e){

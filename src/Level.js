@@ -63,11 +63,8 @@ class Level extends Component {
                     locTiles = locTiles.setIn([i,j,'type'], this.getRandomTile())
                 }
             }
-            console.log('Gets here 1')
             locTiles = this.resolveClusters(locTiles)
-            console.log('Gets here 2')
             let moves = this.findMoves(locTiles)
-            console.log('Gets here 3')
 
             if (moves.length > 0)
                 done = true
@@ -95,19 +92,17 @@ class Level extends Component {
         let locTiles = tiles
         let clusters = this.findClusters(locTiles)
 
-        console.log('gets here 1.1')
         let count = 0
 
-        while (clusters.length>0 || count<1000){
+        while (clusters.length>0){
             locTiles = this.removeClusters(locTiles, clusters)
             locTiles = this.shiftTiles(locTiles)
             clusters = this.findClusters(locTiles)
             count+=1
-            if (count===1000){
-                console.log('Game over')
-                break;
-            }
-
+            // if (count===1000){
+            //     console.log('Game over')
+            //     break;
+            // }
         }
         console.log('Clean Tiles',locTiles, 'count', count)
         return locTiles
@@ -335,7 +330,7 @@ class Level extends Component {
     }
 
     render(){
-        console.log('rendering Levesl')
+        console.log('rendering Level')
         //re-render
         let divStyle = {
             width: this.state.columns*this.state.tilewidth,
