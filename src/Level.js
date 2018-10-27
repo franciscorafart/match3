@@ -46,7 +46,7 @@ class Level extends Component {
         for (let i=0; i<this.state.columns;i++){
             tiles = tiles.set(i, List([]))
             for (let j=0; j<this.state.rows; j++){
-                tiles = tiles.setIn([i,j], Map({type: 0, shifter: 0}))
+                tiles = tiles.setIn([i,j], Map({type: 0, shifter: 0, selected:false}))
             }
         }
 
@@ -280,28 +280,33 @@ class Level extends Component {
     }
 
     addSelected(col, row, addBool){
-        let all_selected = this.state.selectedtiles.slice() //new copy of array (what about object?)
-        let selectedCount = all_selected.length
-        let selected = {column:col,row:row}
 
-        if (!addBool && selectedCount>0){
-            for (let i=0; i<selectedCount; i++){
-                if (this.state.selectedtiles[i].column===col && this.state.selectedtiles[i].row===row)
-                    all_selected.splice(i,1)
-            }
-            this.setState({selectedtiles: all_selected})
-        } else if (addBool){
-            if (selectedCount<2){
-                all_selected.push(selected)
-                this.setState({selectedtiles: all_selected})
-            }
-            if (selectedCount==1){
-                //play the move
-                this.playMove(all_selected)
-            }
-        }
+        let locTiles = this.state.tiles
 
-        // this.setState({selectedtiles: all_selected})
+        locTiles = locTiles.setIn([col,row,'selected'],addBool)
+
+        this.setState({tiles: locTiles})
+
+        // let all_selected = this.state.selectedtiles.slice() //new copy of array (what about object?)
+        // let selectedCount = all_selected.length
+        // let selected = {column:col,row:row}
+        //
+        // if (!addBool && selectedCount>0){
+        //     for (let i=0; i<selectedCount; i++){
+        //         if (this.state.selectedtiles[i].column===col && this.state.selectedtiles[i].row===row)
+        //             all_selected.splice(i,1)
+        //     }
+        //     this.setState({selectedtiles: all_selected})
+        // } else if (addBool){
+        //     if (selectedCount<2){
+        //         all_selected.push(selected)
+        //         this.setState({selectedtiles: all_selected})
+        //     }
+        //     if (selectedCount==1){
+        //         //play the move
+        //         this.playMove(all_selected)
+        //     }
+        // }
 
         //TODO:
         //Next: if adjacent, swap both
@@ -367,6 +372,7 @@ class Level extends Component {
                                                 // key={idx}
                                                 addSelected={this.addSelected}
                                                 selectedCount={this.state.selectedtiles.length}
+                                                selected={row.get('selected')}
                                             />
                                     )
                                 }
