@@ -14,24 +14,14 @@ class Tile extends Component {
         console.log('selected', this.props.selected)
         let selectedPrevious = this.props.selected
 
-        if (this.props.selectedCount<2){
-            if(!selectedPrevious){//if user selected
+        if(!selectedPrevious){//if user selected
                 this.props.addSelected(this.props.col, this.props.row, true)
             } else {
                 this.props.addSelected(this.props.col, this.props.row, false)
             }
-
-        } else {
-            if (selectedPrevious){
-                this.props.addSelected(this.props.col, this.props.row, false)
-            } else {
-                console.log('Only 2 selections allowed!')
-            }
-        }
-
     }
 
-    render() {
+    render(){
         console.log('rendering tile')
 
         let red = this.props.myColor[0]

@@ -15,7 +15,6 @@ class Level extends Component {
             tilewidth: 40,
             tileheight: 40,
             tiles: List([]),
-            selectedtiles:[]
         }
 
         this.getRandomTile = this.getRandomTile.bind(this)
@@ -30,10 +29,16 @@ class Level extends Component {
         this.findMoves = this.findMoves.bind(this)
         this.addSelected = this.addSelected.bind(this)
         this.playMove = this.playMove.bind(this)
+        this.isValidMove = this.isValidMove.bind(this)
+        this.countSelected = this.countSelected.bind(this)
+        this.resetAllSelected = this.resetAllSelected.bind(this)
+
+        this.secTls = []
     }
 
     componentDidUpdate(){
         console.log('component updated')
+        //count selected
     }
 
     getRandomTile(){
@@ -263,8 +268,8 @@ class Level extends Component {
         }
 
         //check vertical swaps and moves
-        for (let i=0; i<this.state.rows; i++){
-            for (var j=0; j<this.state.columns-1; j++){
+        for (let i=0; i<this.state.columns; i++){
+            for (var j=0; j<this.state.rows-1; j++){
                 //swap, find clusters and swap back
                 locTiles = this.swap(i,j,i,j+1, locTiles);
                 clusters = this.findClusters(locTiles);
@@ -285,53 +290,85 @@ class Level extends Component {
 
         locTiles = locTiles.setIn([col,row,'selected'],addBool)
 
-        this.setState({tiles: locTiles})
-
-        // let all_selected = this.state.selectedtiles.slice() //new copy of array (what about object?)
-        // let selectedCount = all_selected.length
-        // let selected = {column:col,row:row}
-        //
-        // if (!addBool && selectedCount>0){
-        //     for (let i=0; i<selectedCount; i++){
-        //         if (this.state.selectedtiles[i].column===col && this.state.selectedtiles[i].row===row)
-        //             all_selected.splice(i,1)
-        //     }
-        //     this.setState({selectedtiles: all_selected})
-        // } else if (addBool){
-        //     if (selectedCount<2){
-        //         all_selected.push(selected)
-        //         this.setState({selectedtiles: all_selected})
-        //     }
-        //     if (selectedCount==1){
-        //         //play the move
-        //         this.playMove(all_selected)
-        //     }
-        // }
-
-        //TODO:
-        //Next: if adjacent, swap both
-        //See if move removeClusters, is so change, if not leave the same
-        // this.playMove()
+        if (this.countSelected(locTiles) === 2){
+            locTiles = this.playMove(locTiles)
+        } else {
+            // locTiles = this.resetAllSelected(locTiles)
+            this.setState({tiles: locTiles})
+        }
     }
 
-    playMove(selected){
-        if (selected.length==2){ //TODO: check if adjacent
-            console.log('play move')
-            let c1 = selected[0].column, r1 = selected[0].row, c2 = selected[1].column, r2 = selected[1].row;
-            console.log('two selected = (',c1,',',r1,')','(',c2,',',r2,')')
-            let tiles = this.state.tiles
+    playMove(tiles){
+        let resolvedTiles = tiles;
+            console.log('secTls', this.secTls)
+            if (this.isValidMove(
+                this.secTls[0][0],
+                this.secTls[0][1],
+                this.secTls[1][0],
+                this.secTls[1][1],
+                resolvedTiles
+                )
+            ){
 
-            let tilesCopy = this.resolveClusters(this.swap(c1, r1, c2, r2, tiles))
+                resolvedTiles = this.swap(
+                    this.secTls[0][0],
+                    this.secTls[0][1],
+                    this.secTls[1][0],
+                    this.secTls[1][1],
+                    resolvedTiles
+                )
+                resolvedTiles = this.resolveClusters(resolvedTiles)
+            }
 
-            // console.log('tilesCopy',tilesCopy)
-            // console.log('tiles', tiles)
-            // if (this.arraysEqual(tiles, tilesCopy))
-            //     return tiles
-            // else
-            // return tilesCopy
-            this.setState({selectedtiles:[], tiles: tilesCopy})
-            console.log('finished playing')
+            //reset all selected if valid or not valid
+            resolvedTiles = this.resetAllSelected(resolvedTiles)
+            console.log('resolved Tiles after Play', resolvedTiles)
+            this.setState({tiles: resolvedTiles})
+    }
+
+    isValidMove(c1,r1,c2,r2, tiles){
+        //1 determine if they're close
+        let locTiles = tiles
+        let moves = this.findMoves(locTiles)
+        let valid = false
+        //2. If they're a valid move.
+
+        for (let move of moves){
+            console.log('move',move)
+            if (move.column1 === c1 && move.column2 === c2 && move.row1 === r1 && move.row2 === r2){
+                valid = true
+                break;
+            }
         }
+        return valid
+    }
+
+    countSelected(tiles){
+        let locTiles = tiles
+        this.secTls = []
+        let count = 0
+        for (let y=0;y<this.state.rows; y++){
+            for (let x=0; x<this.state.columns; x++){
+                if(locTiles.getIn([x, y, 'selected'])){
+                    this.secTls.push([x,y])
+                    count++
+                }
+            }
+        }
+        return count
+    }
+
+    resetAllSelected(tiles){
+        let locTiles = tiles
+        for (let y=0;y<this.state.rows; y++){
+            for (let x=0; x<this.state.columns; x++){
+                locTiles = locTiles.setIn([x,y,'selected'], false)
+            }
+        }
+        this.secTls = []
+        console.log('in resetAllSelected')
+
+        return locTiles
     }
 
     render(){
@@ -371,7 +408,6 @@ class Level extends Component {
                                                 myColor={this.getMyColor(colIdx, rowIdx)}
                                                 // key={idx}
                                                 addSelected={this.addSelected}
-                                                selectedCount={this.state.selectedtiles.length}
                                                 selected={row.get('selected')}
                                             />
                                     )
