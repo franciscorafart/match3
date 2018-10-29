@@ -32,13 +32,13 @@ class Level extends Component {
         this.isValidMove = this.isValidMove.bind(this)
         this.countSelected = this.countSelected.bind(this)
         this.resetAllSelected = this.resetAllSelected.bind(this)
+        this.printTiles = this.printTiles.bind(this)
 
         this.secTls = []
     }
 
     componentDidUpdate(){
-        console.log('component updated')
-        //count selected
+        // console.log('component updated')
     }
 
     getRandomTile(){
@@ -61,8 +61,14 @@ class Level extends Component {
     createLevel(tiles){
         let done = false;
         let locTiles = tiles
+        let countCreateLevel = 0
 
         while(!done){
+            //Note:reset locTiles?
+            locTiles = tiles
+
+            // console.log('countCreateLevel: ', countCreateLevel)
+
             for (let i=0; i<this.state.columns;i++){
                 for (let j=0; j<this.state.rows; j++){
                     locTiles = locTiles.setIn([i,j,'type'], this.getRandomTile())
@@ -71,8 +77,10 @@ class Level extends Component {
             locTiles = this.resolveClusters(locTiles)
             let moves = this.findMoves(locTiles)
 
-            if (moves.length > 0)
+            if (moves.length > 0){
                 done = true
+            }
+            countCreateLevel++
         }
 
         return locTiles
@@ -104,12 +112,8 @@ class Level extends Component {
             locTiles = this.shiftTiles(locTiles)
             clusters = this.findClusters(locTiles)
             count+=1
-            // if (count===1000){
-            //     console.log('Game over')
-            //     break;
-            // }
         }
-        console.log('Clean Tiles',locTiles, 'count', count)
+        // console.log('Clean Tiles',locTiles, 'count', count)
         return locTiles
     }
 
@@ -126,7 +130,7 @@ class Level extends Component {
                     checkcluster = true;
                 } else {
                     //check type of next tile
-                    if (tiles.getIn([i,j,'type']) == tiles.getIn([i+1,j,'type']) && tiles.getIn([i, j, 'type'])!=1){
+                    if (tiles.getIn([i,j,'type']) == tiles.getIn([i+1,j,'type']) && tiles.getIn([i, j, 'type'])!= -1){
                             //if same type increase matchlength
                             matchlength += 1;
                         } else {
@@ -172,28 +176,28 @@ class Level extends Component {
             }
         }
 
+        // console.log('clusters', clusters)
         return clusters
     }
 
     removeClusters(tiles, cluster){
-
         let locTiles = tiles
-        //Loop Clusters
+        //Loop Clusters //NOTE: loop not working
         for (let z=0;z<cluster.length; z++){
             let c = cluster[z]
-
             if (c.horizontal == true){
                 let y = c.row
                 for (let x=c.column; x<c.column+c.length; x++){
-                    locTiles = locTiles.setIn([y,x,'type'], -1)
+                    locTiles = locTiles.setIn([x,y,'type'], -1)
                 }
             } else {
                 let x = c.column
                 for (let y=c.row; y<c.row+c.length; y++){
-                    locTiles = locTiles.setIn([y,x,'type'], -1)
+                    locTiles = locTiles.setIn([x,y,'type'], -1)
                 }
             }
         }
+        // this.printTiles('remove Cluster Tiles loop',locTiles)
 
         //Remove Clusters
         for (let i=0; i<this.state.columns; i++){
@@ -300,15 +304,14 @@ class Level extends Component {
 
     playMove(tiles){
         let resolvedTiles = tiles;
-            console.log('secTls', this.secTls)
-            if (this.isValidMove(
+            let isValidMove = this.isValidMove(
                 this.secTls[0][0],
                 this.secTls[0][1],
                 this.secTls[1][0],
                 this.secTls[1][1],
                 resolvedTiles
                 )
-            ){
+            if (isValidMove){
 
                 resolvedTiles = this.swap(
                     this.secTls[0][0],
@@ -322,19 +325,15 @@ class Level extends Component {
 
             //reset all selected if valid or not valid
             resolvedTiles = this.resetAllSelected(resolvedTiles)
-            console.log('resolved Tiles after Play', resolvedTiles)
             this.setState({tiles: resolvedTiles})
     }
 
     isValidMove(c1,r1,c2,r2, tiles){
-        //1 determine if they're close
         let locTiles = tiles
         let moves = this.findMoves(locTiles)
         let valid = false
-        //2. If they're a valid move.
 
         for (let move of moves){
-            console.log('move',move)
             if (move.column1 === c1 && move.column2 === c2 && move.row1 === r1 && move.row2 === r2){
                 valid = true
                 break;
@@ -366,13 +365,20 @@ class Level extends Component {
             }
         }
         this.secTls = []
-        console.log('in resetAllSelected')
 
         return locTiles
     }
 
+    printTiles(mess, tiles){
+        for (let row of tiles.toArray()){
+            let localVar = []
+            for (let tile of row.toArray()){
+                localVar.push(tile.toObject().type)
+            }
+        }
+    }
+
     render(){
-        console.log('rendering Level')
         //re-render
         let divStyle = {
             width: this.state.columns*this.state.tilewidth,
@@ -406,7 +412,7 @@ class Level extends Component {
                                                 col={colIdx}
                                                 row={rowIdx}
                                                 myColor={this.getMyColor(colIdx, rowIdx)}
-                                                // key={idx}
+                                                key={'('+colIdx+','+rowIdx+')'}
                                                 addSelected={this.addSelected}
                                                 selected={row.get('selected')}
                                             />
