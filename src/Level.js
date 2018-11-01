@@ -38,7 +38,7 @@ class Level extends Component {
     }
 
     componentDidUpdate(){
-        // console.log('component updated')
+        console.log('component updated')
     }
 
     getRandomTile(){
@@ -64,10 +64,7 @@ class Level extends Component {
         let countCreateLevel = 0
 
         while(!done){
-            //Note:reset locTiles?
             locTiles = tiles
-
-            // console.log('countCreateLevel: ', countCreateLevel)
 
             for (let i=0; i<this.state.columns;i++){
                 for (let j=0; j<this.state.rows; j++){
@@ -113,7 +110,7 @@ class Level extends Component {
             clusters = this.findClusters(locTiles)
             count+=1
         }
-        // console.log('Clean Tiles',locTiles, 'count', count)
+
         return locTiles
     }
 
@@ -138,7 +135,6 @@ class Level extends Component {
                             checkcluster = true
                         }
                 }
-                //was there a cluster or end of row?
                 if (checkcluster){
                     if (matchlength >= 3){
                         //begining of the row match and the length of it
@@ -176,7 +172,6 @@ class Level extends Component {
             }
         }
 
-        // console.log('clusters', clusters)
         return clusters
     }
 
@@ -197,7 +192,6 @@ class Level extends Component {
                 }
             }
         }
-        // this.printTiles('remove Cluster Tiles loop',locTiles)
 
         //Remove Clusters
         for (let i=0; i<this.state.columns; i++){
@@ -325,7 +319,8 @@ class Level extends Component {
 
             //reset all selected if valid or not valid
             resolvedTiles = this.resetAllSelected(resolvedTiles)
-            this.setState({tiles: resolvedTiles})
+            setTimeout(this.setState({tiles: resolvedTiles}), 500)
+
     }
 
     isValidMove(c1,r1,c2,r2, tiles){
