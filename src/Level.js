@@ -177,7 +177,7 @@ class Level extends Component {
 
     removeClusters(tiles, cluster){
         let locTiles = tiles
-        //Loop Clusters //NOTE: loop not working
+        //Loop tiles and set to type -1 ones that are in a cluster
         for (let z=0;z<cluster.length; z++){
             let c = cluster[z]
             if (c.horizontal == true){
