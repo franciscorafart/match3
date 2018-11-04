@@ -65,8 +65,7 @@ export const initializeLevel = (state) => {
     return tiles
 }
 
-export const getMyColor = (x,y,state) => {
-    let tiles = state.tiles
+export const getMyColor = (x,y,tiles) => {
     let type = tiles.getIn([x,y,'type'])
     let color = tilecolors[type]
 
