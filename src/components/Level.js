@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import funcs from './resources/functions';
+import { tilecolors } from '../resources/functions';
 import Tile from './Tile'
 import {List, Map} from 'immutable';
+
+import { initGame } from '../redux/actions'
+import { connect } from 'react-redux';
 
 class Level extends Component {
     constructor(props){
@@ -18,9 +21,9 @@ class Level extends Component {
         }
 
         this.getRandomTile = this.getRandomTile.bind(this)
-        this.initLevel = this.initLevel.bind(this)
-        this.createLevel = this.createLevel.bind(this)
-        this.initializeLevel = this.initializeLevel.bind(this)
+        // this.initLevel = this.initLevel.bind(this)
+        // this.createLevel = this.createLevel.bind(this)
+        // this.initializeLevel = this.initializeLevel.bind(this)
         this.getMyColor = this.getMyColor.bind(this)
         this.resolveClusters = this.resolveClusters.bind(this)
         this.findClusters = this.findClusters.bind(this)
@@ -42,58 +45,58 @@ class Level extends Component {
     }
 
     getRandomTile(){
-        return Math.floor(Math.random() * funcs.tilecolors.length)
+        return Math.floor(Math.random() * tilecolors.length)
     }
 
-    initLevel(){
-        let tiles = List([])
+    // initLevel(){
+    //     let tiles = List([])
+    //
+    //     for (let i=0; i<this.state.columns;i++){
+    //         tiles = tiles.set(i, List([]))
+    //         for (let j=0; j<this.state.rows; j++){
+    //             tiles = tiles.setIn([i,j], Map({type: 0, shifter: 0, selected:false}))
+    //         }
+    //     }
+    //
+    //     return tiles
+    // }
 
-        for (let i=0; i<this.state.columns;i++){
-            tiles = tiles.set(i, List([]))
-            for (let j=0; j<this.state.rows; j++){
-                tiles = tiles.setIn([i,j], Map({type: 0, shifter: 0, selected:false}))
-            }
-        }
+    // createLevel(tiles){
+    //     let done = false;
+    //     let locTiles = tiles
+    //     let countCreateLevel = 0
+    //
+    //     while(!done){
+    //         locTiles = tiles
+    //
+    //         for (let i=0; i<this.state.columns;i++){
+    //             for (let j=0; j<this.state.rows; j++){
+    //                 locTiles = locTiles.setIn([i,j,'type'], this.getRandomTile())
+    //             }
+    //         }
+    //         locTiles = this.resolveClusters(locTiles)
+    //         let moves = this.findMoves(locTiles)
+    //
+    //         if (moves.length > 0){
+    //             done = true
+    //         }
+    //         countCreateLevel++
+    //     }
+    //
+    //     return locTiles
+    // }
 
-        return tiles
-    }
-
-    createLevel(tiles){
-        let done = false;
-        let locTiles = tiles
-        let countCreateLevel = 0
-
-        while(!done){
-            locTiles = tiles
-
-            for (let i=0; i<this.state.columns;i++){
-                for (let j=0; j<this.state.rows; j++){
-                    locTiles = locTiles.setIn([i,j,'type'], this.getRandomTile())
-                }
-            }
-            locTiles = this.resolveClusters(locTiles)
-            let moves = this.findMoves(locTiles)
-
-            if (moves.length > 0){
-                done = true
-            }
-            countCreateLevel++
-        }
-
-        return locTiles
-    }
-
-    initializeLevel(){
-        let tiles = this.initLevel()
-        tiles= this.createLevel(tiles)
-
-        this.setState({tiles: tiles})
-    }
+    // initializeLevel(){
+    //     let tiles = this.initLevel()
+    //     tiles= this.createLevel(tiles)
+    //
+    //     this.setState({tiles: tiles})
+    // }
 
     getMyColor(x,y){
         let tiles = this.state.tiles
         let type = tiles.getIn([x,y,'type'])
-        let color = funcs.tilecolors[type]
+        let color = tilecolors[type]
 
         return color
     }
@@ -386,7 +389,7 @@ class Level extends Component {
 
         return (
             <div>
-                <button onClick={this.initializeLevel}>Init Level</button>
+                <button onClick={() => this.props.initGame()}>Init Level</button>
                 <div
                     className="level"
                     style={divStyle}
@@ -423,4 +426,7 @@ class Level extends Component {
   }
 }
 
-export default Level;
+export default connect(
+    null, //this is the mapStateToProps argument
+    { initGame }
+)(Level);

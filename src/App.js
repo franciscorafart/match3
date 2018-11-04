@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Level from './Level'
+import Level from './components/Level'
 
 class App extends Component {
   render() {
