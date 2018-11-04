@@ -6,7 +6,9 @@ import { CLICK_TILE, INIT_GAME } from './actionTypes';
 export const clickTile = content => ({
     type: CLICK_TILE,
     payload: {
-        content
+        col: content.col,
+        row: content.row,
+        selected: content.selected
     }
 });
 

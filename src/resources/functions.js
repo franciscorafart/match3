@@ -256,7 +256,7 @@ const findMoves = (tiles, state) => {
     return moves
 }
 
-const addSelected = (col, row, addBool, state) => {
+export const addSelected = (col, row, addBool, state) => {
 
     let locTiles = state.tiles
 
@@ -264,11 +264,14 @@ const addSelected = (col, row, addBool, state) => {
 
     if (countSelected(locTiles, state) === 2){
         locTiles = playMove(locTiles, state)
-    } else {
-
-        //TODO: modify set State for redux function
-        // this.setState({tiles: locTiles})
     }
+    // else {
+    //
+    //     //TODO: modify set State for redux function
+    //     // this.setState({tiles: locTiles})
+    // }
+
+    return locTiles
 }
 
 const playMove = (tiles, state) => {

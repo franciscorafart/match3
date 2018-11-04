@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 
+import { clickTile } from '../redux/actions'
+import { connect } from 'react-redux';
+
 class Tile extends Component {
     constructor(props){
         super(props)
@@ -11,14 +14,22 @@ class Tile extends Component {
     }
 
     clicked(e){
-        console.log('selected', this.props.selected)
-        let selectedPrevious = this.props.selected
-
-        if(!selectedPrevious){//if user selected
-                this.props.addSelected(this.props.col, this.props.row, true)
-            } else {
-                this.props.addSelected(this.props.col, this.props.row, false)
+        this.props.clickTile(
+            {
+                col: this.props.col,
+                row: this.props.row,
+                selected: this.props.selected
             }
+        )
+
+        // console.log('selected', this.props.selected)
+        // let selectedPrevious = this.props.selected
+        //
+        // if(!selectedPrevious){//if user selected
+        //         this.props.addSelected(this.props.col, this.props.row, true)
+        //     } else {
+        //         this.props.addSelected(this.props.col, this.props.row, false)
+        //     }
     }
 
     render(){
@@ -47,4 +58,13 @@ class Tile extends Component {
   }
 }
 
-export default Tile;
+// const mapStateToProps = (state) => {
+//     console.log('state in Tile.js', state)
+//     const { playGame } = state
+//     const
+// }
+
+export default connect(
+    null,
+    { clickTile }
+)(Tile);
