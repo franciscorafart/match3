@@ -8,7 +8,7 @@ export const clickTile = content => ({
     payload: {
         col: content.col,
         row: content.row,
-        selected: content.selected
+        selected: content.selected,
     }
 });
 

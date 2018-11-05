@@ -274,17 +274,25 @@ export const addSelected = (col, row, addBool, state) => {
     return locTiles
 }
 
+const isValidMove = (c1,r1,c2,r2, tiles, state) => {
+    let locTiles = tiles
+    let moves = findMoves(locTiles, state)
+    let valid = false
+
+    for (let move of moves){
+        if (move.column1 === c1 && move.column2 === c2 && move.row1 === r1 && move.row2 === r2){
+            valid = true
+            break;
+        }
+    }
+    return valid
+}
+
 const playMove = (tiles, state) => {
     let resolvedTiles = tiles;
-        let isValidMove = isValidMove(
-            secTls[0][0],
-            secTls[0][1],
-            secTls[1][0],
-            secTls[1][1],
-            resolvedTiles,
-            state
-            )
-        if (isValidMove){
+        let isValid = isValidMove(secTls[0][0],secTls[0][1],secTls[1][0],secTls[1][1],resolvedTiles,state)
+
+        if (isValid){
             resolvedTiles = swap(
                 secTls[0][0],
                 secTls[0][1],
@@ -301,20 +309,6 @@ const playMove = (tiles, state) => {
         //TODO: change for redux way of changing state
         // setTimeout(this.setState({tiles: resolvedTiles}), 500)
 
-}
-
-const isValidMove = (c1,r1,c2,r2, tiles, state) => {
-    let locTiles = tiles
-    let moves = findMoves(locTiles, state)
-    let valid = false
-
-    for (let move of moves){
-        if (move.column1 === c1 && move.column2 === c2 && move.row1 === r1 && move.row2 === r2){
-            valid = true
-            break;
-        }
-    }
-    return valid
 }
 
 const countSelected = (tiles, state) => {
