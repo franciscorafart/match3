@@ -2,6 +2,8 @@ import {List, Map} from 'immutable';
 
 //Selected tiles as global for the moment
 let secTls = []
+let rownum = 0
+let colnum = 0
 
 export const tilecolors = [
     [255, 128, 128],
@@ -17,12 +19,13 @@ const getRandomTile = () => {
     return Math.floor(Math.random() * tilecolors.length)
 }
 
-const initLevel = (state) => {
+const initLevel = () => {
+
     let tiles = List([])
 
-    for (let i=0; i<state.columns;i++){
+    for (let i=0; i<colnum;i++){
         tiles = tiles.set(i, List([]))
-        for (let j=0; j<state.rows; j++){
+        for (let j=0; j<rownum; j++){
             tiles = tiles.setIn([i,j], Map({type: 0, shifter: 0, selected:false}))
         }
     }
@@ -30,38 +33,36 @@ const initLevel = (state) => {
     return tiles
 }
 
-const createLevel = (tiles, state) => {
+const createLevel = (tiles) => {
     let done = false;
     let locTiles = tiles
-    let countCreateLevel = 0
 
     while(!done){
         locTiles = tiles
 
-        for (let i=0; i<state.columns;i++){
-            for (let j=0; j<state.rows; j++){
+        for (let i=0; i<colnum;i++){
+            for (let j=0; j<rownum; j++){
                 locTiles = locTiles.setIn([i,j,'type'], getRandomTile())
             }
         }
-        locTiles = resolveClusters(locTiles, state)
-        let moves = findMoves(locTiles, state)
+        locTiles = resolveClusters(locTiles)
+        let moves = findMoves(locTiles)
 
         if (moves.length > 0){
             done = true
         }
-        countCreateLevel++
     }
 
     return locTiles
 }
 
-//TODO: Move this into initGame
 export const initializeLevel = (state) => {
-    let tiles = initLevel(state)
-    tiles = createLevel(tiles, state)
+    colnum = state.columns
+    rownum = state.rows
 
-    //Set state in redux way
-    // this.setState({tiles: tiles})
+    let tiles = initLevel()
+    tiles = createLevel(tiles)
+
     return tiles
 }
 
@@ -72,36 +73,33 @@ export const getMyColor = (x,y,tiles) => {
     return color
 }
 
-const resolveClusters = (tiles, state) => {
+const resolveClusters = (tiles) => {
     let locTiles = tiles
-    let clusters = findClusters(locTiles, state)
-
-    let count = 0
+    let clusters = findClusters(locTiles)
 
     while (clusters.length>0){
-        locTiles = removeClusters(locTiles, clusters, state)
-        locTiles = shiftTiles(locTiles, state)
-        clusters = findClusters(locTiles, state)
-        count+=1
+        locTiles = removeClusters(locTiles, clusters)
+        locTiles = shiftTiles(locTiles)
+        clusters = findClusters(locTiles)
     }
 
     return locTiles
 }
 
-const findClusters = (tiles, state) => {
+const findClusters = (tiles) => {
     //reset
     let clusters = []
 
-    for (let j=0; j<state.rows; j++){
+    for (let j=0; j<rownum; j++){
         let matchlength = 1;
-        for (let i=0; i<state.columns;i++){
+        for (let i=0; i<colnum;i++){
             let checkcluster = false;
 
-            if (i == state.columns-1){
+            if (i === colnum-1){
                 checkcluster = true;
             } else {
                 //check type of next tile
-                if (tiles.getIn([i,j,'type']) == tiles.getIn([i+1,j,'type']) && tiles.getIn([i, j, 'type'])!= -1){
+                if (tiles.getIn([i,j,'type']) === tiles.getIn([i+1,j,'type']) && tiles.getIn([i, j, 'type'])!== -1){
                         //if same type increase matchlength
                         matchlength += 1;
                     } else {
@@ -121,15 +119,15 @@ const findClusters = (tiles, state) => {
     }
 
     //Vertical Clusters
-    for (let i=0; i<state.columns; i++){
+    for (let i=0; i<colnum; i++){
         let matchlength = 1;
-        for (let j=0; j<state.rows; j++){
+        for (let j=0; j<rownum; j++){
             let checkcluster = false
 
-            if (j == state.rows-1){
+            if (j === rownum-1){
                 checkcluster = true;
             } else {
-                if (tiles.getIn([i,j,'type']) == tiles.getIn([i,j+1,'type']) && tiles.getIn([i,j,'type']) != -1){
+                if (tiles.getIn([i,j,'type']) === tiles.getIn([i,j+1,'type']) && tiles.getIn([i,j,'type']) !== -1){
                     matchlength+=1;
                 } else{
                     checkcluster=true;
@@ -149,12 +147,12 @@ const findClusters = (tiles, state) => {
     return clusters
 }
 
-const removeClusters = (tiles, cluster, state) => {
+const removeClusters = (tiles, cluster) => {
     let locTiles = tiles
     //Loop tiles and set to type -1 ones that are in a cluster
     for (let z=0;z<cluster.length; z++){
         let c = cluster[z]
-        if (c.horizontal == true){
+        if (c.horizontal === true){
             let y = c.row
             for (let x=c.column; x<c.column+c.length; x++){
                 locTiles = locTiles.setIn([x,y,'type'], -1)
@@ -168,10 +166,10 @@ const removeClusters = (tiles, cluster, state) => {
     }
 
     //Remove Clusters
-    for (let i=0; i<state.columns; i++){
+    for (let i=0; i<colnum; i++){
         let shift = 0;
-        for (let j=state.rows-1; j>=0; j--){
-            if (locTiles.getIn([i,j,'type']) == -1){
+        for (let j=rownum-1; j>=0; j--){
+            if (locTiles.getIn([i,j,'type']) === -1){
                 shift ++;
                 locTiles = locTiles.setIn([i,j, 'shifter'], 0)
             } else {
@@ -183,13 +181,13 @@ const removeClusters = (tiles, cluster, state) => {
     return locTiles
 }
 
-const shiftTiles = (tiles, state) => {
+const shiftTiles = (tiles) => {
 
     let locTiles = tiles
 
-    for (let i=0; i<state.columns; i++) {
-        for (let j=state.rows-1; j>=0; j--){
-            if (locTiles.getIn([i,j,'type']) == -1){
+    for (let i=0; i<colnum; i++) {
+        for (let j=rownum-1; j>=0; j--){
+            if (locTiles.getIn([i,j,'type']) === -1){
                 locTiles = locTiles.setIn([i,j,'type'], getRandomTile())
             } else {
                 let shift = locTiles.getIn([i,j,'shifter'])
@@ -219,17 +217,17 @@ const swap = (x1, y1, x2, y2, tiles) => {
     return tilescp
 }
 
-const findMoves = (tiles, state) => {
+const findMoves = (tiles) => {
     let locTiles = tiles
 
     let moves = []
     let clusters = []
     //check horizontal swaps
-    for (let j=0; j<state.rows; j++){
-        for (let i=0; i<state.columns-1; i++){
+    for (let j=0; j<rownum; j++){
+        for (let i=0; i<colnum-1; i++){
             //swap, find cluster and swap back
             locTiles = swap(i, j, i+1, j, locTiles);
-            clusters = findClusters(locTiles, state)
+            clusters = findClusters(locTiles)
             locTiles = swap(i, j, i+1, j, locTiles);
 
             //check if swap made cluster
@@ -240,11 +238,11 @@ const findMoves = (tiles, state) => {
     }
 
     //check vertical swaps and moves
-    for (let i=0; i<state.columns; i++){
-        for (var j=0; j<state.rows-1; j++){
+    for (let i=0; i<colnum; i++){
+        for (var j=0; j<rownum-1; j++){
             //swap, find clusters and swap back
             locTiles = swap(i,j,i,j+1, locTiles);
-            clusters = findClusters(locTiles, state);
+            clusters = findClusters(locTiles);
             locTiles = swap(i, j, i, j+1, locTiles);
 
             //Check if swap made cluster
@@ -256,27 +254,21 @@ const findMoves = (tiles, state) => {
     return moves
 }
 
-export const addSelected = (col, row, addBool, state) => {
+export const addSelected = (col, row, addBool, tiles) => {
 
-    let locTiles = state.tiles
-
+    let locTiles = tiles
     locTiles = locTiles.setIn([col,row,'selected'],addBool)
 
-    if (countSelected(locTiles, state) === 2){
-        locTiles = playMove(locTiles, state)
+    if (countSelected(locTiles) === 2){
+        locTiles = playMove(locTiles)
     }
-    // else {
-    //
-    //     //TODO: modify set State for redux function
-    //     // this.setState({tiles: locTiles})
-    // }
 
     return locTiles
 }
 
-const isValidMove = (c1,r1,c2,r2, tiles, state) => {
+const isValidMove = (c1,r1,c2,r2, tiles) => {
     let locTiles = tiles
-    let moves = findMoves(locTiles, state)
+    let moves = findMoves(locTiles)
     let valid = false
 
     for (let move of moves){
@@ -288,9 +280,9 @@ const isValidMove = (c1,r1,c2,r2, tiles, state) => {
     return valid
 }
 
-const playMove = (tiles, state) => {
+const playMove = (tiles) => {
     let resolvedTiles = tiles;
-        let isValid = isValidMove(secTls[0][0],secTls[0][1],secTls[1][0],secTls[1][1],resolvedTiles,state)
+    let isValid = isValidMove(secTls[0][0],secTls[0][1],secTls[1][0],secTls[1][1],resolvedTiles)
 
         if (isValid){
             resolvedTiles = swap(
@@ -300,23 +292,21 @@ const playMove = (tiles, state) => {
                 secTls[1][1],
                 resolvedTiles
             )
-            resolvedTiles = resolveClusters(resolvedTiles, state)
+            resolvedTiles = resolveClusters(resolvedTiles)
         }
 
         //reset all selected if valid or not valid
-        resolvedTiles = resetAllSelected(resolvedTiles, state)
+        resolvedTiles = resetAllSelected(resolvedTiles)
 
-        //TODO: change for redux way of changing state
-        // setTimeout(this.setState({tiles: resolvedTiles}), 500)
-
+    return resolvedTiles
 }
 
-const countSelected = (tiles, state) => {
+const countSelected = (tiles) => {
     let locTiles = tiles
     secTls = []
     let count = 0
-    for (let y=0;y<state.rows; y++){
-        for (let x=0; x<state.columns; x++){
+    for (let y=0;y<rownum; y++){
+        for (let x=0; x<colnum; x++){
             if(locTiles.getIn([x, y, 'selected'])){
                 secTls.push([x,y])
                 count++
@@ -326,10 +316,10 @@ const countSelected = (tiles, state) => {
     return count
 }
 
-const resetAllSelected = (tiles, state) => {
+const resetAllSelected = (tiles) => {
     let locTiles = tiles
-    for (let y=0;y<state.rows; y++){
-        for (let x=0; x<state.columns; x++){
+    for (let y=0;y<rownum; y++){
+        for (let x=0; x<colnum; x++){
             locTiles = locTiles.setIn([x,y,'selected'], false)
         }
     }
@@ -349,9 +339,3 @@ export const printableTiles = (mess, tiles) => {
     }
     return result
 }
-
-// module.exports = {
-//     tilecolors: tilecolors,
-//     getMyColor: getMyColor,
-//     initializeLevel: initializeLevel
-// }

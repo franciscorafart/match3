@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import { tilecolors, getMyColor, addSelected} from '../resources/functions';
+import { getMyColor } from '../resources/functions';
 import Tile from './Tile'
-import {List, Map} from 'immutable';
 
 import { initGame } from '../redux/actions'
 import { connect } from 'react-redux';
 
 class Level extends Component {
-    constructor(props){
-        super(props);
-    }
 
     componentDidUpdate(){
         console.log('component updated')
@@ -50,7 +46,6 @@ class Level extends Component {
                                                 row={rowIdx}
                                                 myColor={getMyColor(colIdx, rowIdx, this.props.tiles)}
                                                 key={'('+colIdx+','+rowIdx+')'}
-                                                addSelected={this.addSelected}
                                                 selected={row.get('selected')}
                                             />
                                     )
@@ -69,7 +64,7 @@ class Level extends Component {
 const mapStateToProps = (state) => {
     const { initGame } = state
     const { tiles, tilewidth, tileheight, columns, rows } = initGame;
-    console.log('state in Level.js', state)
+
     return {
         tiles: tiles,
         tilewidth: tilewidth,

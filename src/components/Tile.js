@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { clickTile } from '../redux/actions'
+import { clickTile } from '../redux/actions';
 import { connect } from 'react-redux';
 
 class Tile extends Component {

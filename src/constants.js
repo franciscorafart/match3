@@ -1,4 +1,4 @@
-import {List, Map} from 'immutable';
+import { List } from 'immutable';
 
 export const INITIAL_STATE = {
     x: 250,
