@@ -19,13 +19,22 @@ const getRandomTile = () => {
     return Math.floor(Math.random() * tilecolors.length)
 }
 
+const range = (x, i) =>{
+    let range = [...Array(x).keys()]
+
+    if(i === -1)
+        return range.reverse()
+
+    return [...Array(x).keys()]
+}
+
 const initLevel = () => {
 
     let tiles = List([])
 
-    for (let i=0; i<colnum;i++){
+    for (let i of range(colnum)){
         tiles = tiles.set(i, List([]))
-        for (let j=0; j<rownum; j++){
+        for (let j of range(rownum)){
             tiles = tiles.setIn([i,j], Map({type: 0, shifter: 0, selected:false}))
         }
     }
@@ -40,11 +49,12 @@ const createLevel = (tiles) => {
     while(!done){
         locTiles = tiles
 
-        for (let i=0; i<colnum;i++){
-            for (let j=0; j<rownum; j++){
+        for (let i of range(colnum)){
+            for (let j of range(rownum)){
                 locTiles = locTiles.setIn([i,j,'type'], getRandomTile())
             }
         }
+
         locTiles = resolveClusters(locTiles)
         let moves = findMoves(locTiles)
 
@@ -90,9 +100,9 @@ const findClusters = (tiles) => {
     //reset
     let clusters = []
 
-    for (let j=0; j<rownum; j++){
+    for (let j of range(rownum)){
         let matchlength = 1;
-        for (let i=0; i<colnum;i++){
+        for (let i of range(colnum)){
             let checkcluster = false;
 
             if (i === colnum-1){
@@ -119,9 +129,9 @@ const findClusters = (tiles) => {
     }
 
     //Vertical Clusters
-    for (let i=0; i<colnum; i++){
+    for (let i of range(colnum)){
         let matchlength = 1;
-        for (let j=0; j<rownum; j++){
+        for (let j of range(rownum)){
             let checkcluster = false
 
             if (j === rownum-1){
@@ -150,7 +160,7 @@ const findClusters = (tiles) => {
 const removeClusters = (tiles, cluster) => {
     let locTiles = tiles
     //Loop tiles and set to type -1 ones that are in a cluster
-    for (let z=0;z<cluster.length; z++){
+    for (let z of range(cluster.length)){
         let c = cluster[z]
         if (c.horizontal === true){
             let y = c.row
@@ -166,9 +176,9 @@ const removeClusters = (tiles, cluster) => {
     }
 
     //Remove Clusters
-    for (let i=0; i<colnum; i++){
+    for (let i of range(colnum)){
         let shift = 0;
-        for (let j=rownum-1; j>=0; j--){
+        for (let j of range(rownum,-1)){
             if (locTiles.getIn([i,j,'type']) === -1){
                 shift ++;
                 locTiles = locTiles.setIn([i,j, 'shifter'], 0)
@@ -184,9 +194,8 @@ const removeClusters = (tiles, cluster) => {
 const shiftTiles = (tiles) => {
 
     let locTiles = tiles
-
-    for (let i=0; i<colnum; i++) {
-        for (let j=rownum-1; j>=0; j--){
+    for (let i of range(colnum)){
+        for (let j of range(rownum,-1)){
             if (locTiles.getIn([i,j,'type']) === -1){
                 locTiles = locTiles.setIn([i,j,'type'], getRandomTile())
             } else {
@@ -223,8 +232,8 @@ const findMoves = (tiles) => {
     let moves = []
     let clusters = []
     //check horizontal swaps
-    for (let j=0; j<rownum; j++){
-        for (let i=0; i<colnum-1; i++){
+    for (let j of range(rownum)){
+        for (let i of range(colnum)){
             //swap, find cluster and swap back
             locTiles = swap(i, j, i+1, j, locTiles);
             clusters = findClusters(locTiles)
@@ -238,8 +247,8 @@ const findMoves = (tiles) => {
     }
 
     //check vertical swaps and moves
-    for (let i=0; i<colnum; i++){
-        for (var j=0; j<rownum-1; j++){
+    for (let i of range(colnum)){
+        for (let j of range(rownum)){
             //swap, find clusters and swap back
             locTiles = swap(i,j,i,j+1, locTiles);
             clusters = findClusters(locTiles);
@@ -305,8 +314,8 @@ const countSelected = (tiles) => {
     let locTiles = tiles
     secTls = []
     let count = 0
-    for (let y=0;y<rownum; y++){
-        for (let x=0; x<colnum; x++){
+    for (let y of range(rownum)){
+        for (let x of range(colnum)){
             if(locTiles.getIn([x, y, 'selected'])){
                 secTls.push([x,y])
                 count++
@@ -318,8 +327,8 @@ const countSelected = (tiles) => {
 
 const resetAllSelected = (tiles) => {
     let locTiles = tiles
-    for (let y=0;y<rownum; y++){
-        for (let x=0; x<colnum; x++){
+    for (let y of range(rownum)){
+        for (let x of range(colnum)){
             locTiles = locTiles.setIn([x,y,'selected'], false)
         }
     }
