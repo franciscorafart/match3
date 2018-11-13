@@ -51,6 +51,8 @@ class Level extends Component {
                                                 myColor={getMyColor(colIdx, rowIdx, this.props.tiles)}
                                                 key={'('+colIdx+','+rowIdx+')'}
                                                 selected={row.get('selected')}
+                                                solved={this.props.solved}
+                                                type={row.get('type')}
                                             />
                                     )
                                 }
@@ -66,7 +68,7 @@ class Level extends Component {
 
 //TODO: this state to props
 const mapStateToProps = (state) => {
-    console.log('state', state)
+    // console.log('state', state)
     const { initGame } = state
     const { tiles, tilewidth, tileheight, columns, rows, solved } = initGame;
 
