@@ -8,4 +8,5 @@ export const INITIAL_STATE = {
     tilewidth: 40,
     tileheight: 40,
     tiles: List([]),
+    solved: false
 }

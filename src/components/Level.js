@@ -7,13 +7,11 @@ import { initGame, checkAvailableMoves } from '../redux/actions';
 import { connect } from 'react-redux';
 
 class Level extends Component {
-
     componentDidUpdate(){
-
-        // console.log('checking available moves')
-        // setTimeout(this.props.checkAvailableMoves(), 1000)
-
-        console.log('component updated')
+        //If the board isn't solved, trigger to check empty spaces
+        if (!this.props.solved){
+            let timeout = setTimeout(this.props.checkAvailableMoves, 1000)
+        }
     }
 
     render(){
@@ -70,14 +68,15 @@ class Level extends Component {
 const mapStateToProps = (state) => {
     console.log('state', state)
     const { initGame } = state
-    const { tiles, tilewidth, tileheight, columns, rows } = initGame;
+    const { tiles, tilewidth, tileheight, columns, rows, solved } = initGame;
 
     return {
         tiles: tiles,
         tilewidth: tilewidth,
         tileheight:tileheight,
         columns: columns,
-        rows: rows
+        rows: rows,
+        solved: solved
     }
 }
 
