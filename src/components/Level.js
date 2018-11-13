@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { getMyColor } from '../resources/functions';
 import Tile from './Tile'
 
-import { initGame } from '../redux/actions'
+import { initGame, checkAvailableMoves } from '../redux/actions';
+
 import { connect } from 'react-redux';
 
 class Level extends Component {
 
     componentDidUpdate(){
+
+        // console.log('checking available moves')
+        // setTimeout(this.props.checkAvailableMoves(), 1000)
+
         console.log('component updated')
     }
 
@@ -25,6 +30,7 @@ class Level extends Component {
         return (
             <div>
                 <button onClick={() => this.props.initGame()}>Init Level</button>
+                <button onClick={() => this.props.checkAvailableMoves()}>Next match</button>
                 <div
                     className="level"
                     style={divStyle}
@@ -62,6 +68,7 @@ class Level extends Component {
 
 //TODO: this state to props
 const mapStateToProps = (state) => {
+    console.log('state', state)
     const { initGame } = state
     const { tiles, tilewidth, tileheight, columns, rows } = initGame;
 
@@ -76,5 +83,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps, //this is the mapStateToProps argument
-    { initGame }
+    { initGame, checkAvailableMoves }
 )(Level);

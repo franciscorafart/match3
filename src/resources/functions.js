@@ -42,7 +42,7 @@ const initLevel = () => {
     return tiles
 }
 
-const createLevel = (tiles) => {
+export const createLevel = (tiles) => {
     let done = false;
     let locTiles = tiles
 
@@ -78,6 +78,11 @@ export const initializeLevel = (state) => {
 
 export const getMyColor = (x,y,tiles) => {
     let type = tiles.getIn([x,y,'type'])
+
+    //Empty one (black)
+    if (type === -1)
+        return [0,0,0]
+
     let color = tilecolors[type]
 
     return color
@@ -96,7 +101,18 @@ const resolveClusters = (tiles) => {
     return locTiles
 }
 
-const findClusters = (tiles) => {
+export const resolveOneCluster = (tiles) => {
+    let locTiles = tiles
+    let clusters = findClusters(locTiles)
+    console.log('clusters length in resolveOneCluster: ', clusters.length)
+
+    if (clusters.length >= 0)
+        locTiles = removeClusters(locTiles, clusters)
+
+    return locTiles
+}
+
+export const findClusters = (tiles) => {
     //reset
     let clusters = []
 
@@ -109,7 +125,8 @@ const findClusters = (tiles) => {
                 checkcluster = true;
             } else {
                 //check type of next tile
-                if (tiles.getIn([i,j,'type']) === tiles.getIn([i+1,j,'type']) && tiles.getIn([i, j, 'type'])!== -1){
+                // if (tiles.getIn([i,j,'type']) === tiles.getIn([i+1,j,'type']) && tiles.getIn([i, j, 'type'])!== -1){
+                    if (tiles.getIn([i,j,'type']) === tiles.getIn([i+1,j,'type'])){
                         //if same type increase matchlength
                         matchlength += 1;
                     } else {
@@ -137,7 +154,8 @@ const findClusters = (tiles) => {
             if (j === rownum-1){
                 checkcluster = true;
             } else {
-                if (tiles.getIn([i,j,'type']) === tiles.getIn([i,j+1,'type']) && tiles.getIn([i,j,'type']) !== -1){
+                // if (tiles.getIn([i,j,'type']) === tiles.getIn([i,j+1,'type']) && tiles.getIn([i,j,'type']) !== -1){
+                    if (tiles.getIn([i,j,'type']) === tiles.getIn([i,j+1,'type'])){
                     matchlength+=1;
                 } else{
                     checkcluster=true;
@@ -191,7 +209,7 @@ const removeClusters = (tiles, cluster) => {
     return locTiles
 }
 
-const shiftTiles = (tiles) => {
+export const shiftTiles = (tiles) => {
 
     let locTiles = tiles
     for (let i of range(colnum)){
@@ -226,7 +244,7 @@ const swap = (x1, y1, x2, y2, tiles) => {
     return tilescp
 }
 
-const findMoves = (tiles) => {
+export const findMoves = (tiles) => {
     let locTiles = tiles
 
     let moves = []
@@ -269,7 +287,19 @@ export const addSelected = (col, row, addBool, tiles) => {
     locTiles = locTiles.setIn([col,row,'selected'],addBool)
 
     if (countSelected(locTiles) === 2){
-        locTiles = playMove(locTiles)
+        locTiles = playMoves(locTiles)
+    }
+
+    return locTiles
+}
+
+export const addSelectedOneMove = (col, row, addBool, tiles) => {
+
+    let locTiles = tiles
+    locTiles = locTiles.setIn([col,row,'selected'],addBool)
+
+    if (countSelected(locTiles) === 2){
+        locTiles = playOneMove(locTiles)
     }
 
     return locTiles
@@ -289,7 +319,7 @@ const isValidMove = (c1,r1,c2,r2, tiles) => {
     return valid
 }
 
-const playMove = (tiles) => {
+const playMoves = (tiles) => {
     let resolvedTiles = tiles;
     let isValid = isValidMove(secTls[0][0],secTls[0][1],secTls[1][0],secTls[1][1],resolvedTiles)
 
@@ -306,6 +336,28 @@ const playMove = (tiles) => {
 
         //reset all selected if valid or not valid
         resolvedTiles = resetAllSelected(resolvedTiles)
+
+    return resolvedTiles
+}
+
+export const playOneMove = (tiles) => {
+    let resolvedTiles = tiles;
+    //TODO: problem with selTls when is middle move
+    let isValid = isValidMove(secTls[0][0],secTls[0][1],secTls[1][0],secTls[1][1],resolvedTiles)
+
+    if (isValid){
+        resolvedTiles = swap(
+            secTls[0][0],
+            secTls[0][1],
+            secTls[1][0],
+            secTls[1][1],
+            resolvedTiles
+        )
+
+    resolvedTiles = resolveOneCluster(resolvedTiles)
+    }
+
+    resolvedTiles = resetAllSelected(resolvedTiles)
 
     return resolvedTiles
 }

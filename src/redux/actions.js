@@ -1,4 +1,4 @@
-import { CLICK_TILE, INIT_GAME } from './actionTypes';
+import { CLICK_TILE, INIT_GAME, AVAILABLE_MOVES } from './actionTypes';
 
 //referece for each iteration of the board
 
@@ -13,4 +13,8 @@ export const clickTile = content => ({
 
 export const initGame = content => ({
     type: INIT_GAME,
+})
+
+export const checkAvailableMoves = content => ({
+    type: AVAILABLE_MOVES,
 })
