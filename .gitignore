@@ -19,3 +19,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#resources
+src/resources/bomb.mp3
+src/resources/explosion.png
