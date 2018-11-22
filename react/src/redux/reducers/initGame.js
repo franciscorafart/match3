@@ -10,6 +10,15 @@ const initialState =  INITIAL_STATE;
 export default function(state = initialState, action){
     switch (action.type) {
         case INIT_GAME: {
+
+            //fetch request
+            fetch('/initializeLevel',{
+                method:'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({})
+            })
+            .then(res => console.log('res from backend: ', res))
+
             let newTiles = initializeLevel(state)
 
             return {
