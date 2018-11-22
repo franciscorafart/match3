@@ -42,7 +42,7 @@ const initLevel = () => {
     return tiles
 }
 
-const createLevel = (tiles) => {
+    const createLevel = (tiles) => {
     let done = false;
     let locTiles = tiles
 

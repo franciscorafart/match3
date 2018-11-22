@@ -1,0 +1,11 @@
+{
+  "name": "match3-express",
+  "version": "1.0.0",
+  "description": "Express Backend for match 3",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Francisco Rafart",
+  "license": "ISC"
+}

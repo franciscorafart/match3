@@ -1,13 +1,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+react/node_modules
+express/node_mules
 
 # testing
 /coverage
 
 # production
-/build
+react/build
 
 # misc
 .DS_Store
@@ -21,5 +22,5 @@ yarn-debug.log*
 yarn-error.log*
 
 #resources
-src/resources/bomb.mp3
-src/resources/explosion.png
+react/src/resources/bomb.mp3
+react/src/resources/explosion.png
