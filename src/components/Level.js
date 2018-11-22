@@ -10,7 +10,7 @@ class Level extends Component {
     componentDidUpdate(){
         //If the board isn't solved, trigger to check empty spaces
         if (!this.props.solved){
-            let timeout = setTimeout(this.props.checkAvailableMoves, 2000)
+            let timeout = setTimeout(this.props.checkAvailableMoves, 1200)
         }
     }
 

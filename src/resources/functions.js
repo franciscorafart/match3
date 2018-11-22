@@ -42,7 +42,7 @@ const initLevel = () => {
     return tiles
 }
 
-export const createLevel = (tiles) => {
+const createLevel = (tiles) => {
     let done = false;
     let locTiles = tiles
 
@@ -101,7 +101,7 @@ const resolveClusters = (tiles) => {
     return locTiles
 }
 
-export const resolveOneCluster = (tiles) => {
+const resolveOneCluster = (tiles) => {
     let locTiles = tiles
     let clusters = findClusters(locTiles)
     console.log('clusters length in resolveOneCluster: ', clusters.length)
@@ -112,7 +112,7 @@ export const resolveOneCluster = (tiles) => {
     return locTiles
 }
 
-export const findClusters = (tiles) => {
+const findClusters = (tiles) => {
     //reset
     let clusters = []
 
@@ -209,7 +209,7 @@ const removeClusters = (tiles, cluster) => {
     return locTiles
 }
 
-export const shiftTiles = (tiles) => {
+const shiftTiles = (tiles) => {
 
     let locTiles = tiles
     for (let i of range(colnum)){
@@ -244,7 +244,7 @@ const swap = (x1, y1, x2, y2, tiles) => {
     return tilescp
 }
 
-export const findMoves = (tiles) => {
+const findMoves = (tiles) => {
     let locTiles = tiles
 
     let moves = []
@@ -281,7 +281,7 @@ export const findMoves = (tiles) => {
     return moves
 }
 
-export const addSelected = (col, row, addBool, tiles) => {
+const addSelected = (col, row, addBool, tiles) => {
 
     let locTiles = tiles
     locTiles = locTiles.setIn([col,row,'selected'],addBool)
@@ -293,7 +293,7 @@ export const addSelected = (col, row, addBool, tiles) => {
     return locTiles
 }
 
-export const addSelectedOneMove = (col, row, addBool, tiles) => {
+const addSelectedOneMove = (col, row, addBool, tiles) => {
 
     let locTiles = tiles
     locTiles = locTiles.setIn([col,row,'selected'],addBool)
@@ -340,7 +340,7 @@ const playMoves = (tiles) => {
     return resolvedTiles
 }
 
-export const playOneMove = (tiles) => {
+const playOneMove = (tiles) => {
     let resolvedTiles = tiles;
     //TODO: problem with selTls when is middle move
     let isValid = isValidMove(secTls[0][0],secTls[0][1],secTls[1][0],secTls[1][1],resolvedTiles)
@@ -399,4 +399,42 @@ export const printableTiles = (mess, tiles) => {
         result.push(localVar)
     }
     return result
+}
+
+export const clickTile = (tiles, col, row, selectedPrevious) => {
+    let solved = true
+    let newTiles = null
+    if (!selectedPrevious)
+        newTiles = addSelectedOneMove(col, row, true, tiles)
+    else
+        newTiles = addSelectedOneMove(col, row, false, tiles)
+
+    let clusters = findClusters(newTiles)
+    if (clusters.length>0)
+        solved=false
+
+    return {
+        newTiles: newTiles,
+        solved: solved
+    }
+}
+
+export const availableMoves = (tiles) => {
+    let clusters = findClusters(tiles);
+    let solved = true;
+
+    if (clusters.length > 0){
+        let newTiles = shiftTiles(tiles);
+        clusters = findClusters(newTiles);
+        if (clusters.length > 0){
+            newTiles = resolveOneCluster(newTiles, clusters);
+            solved = false
+        }
+
+        return {
+            newTiles: newTiles,
+            solved: solved
+        }
+    }
+    return {tiles: tiles}
 }

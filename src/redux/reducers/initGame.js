@@ -1,8 +1,7 @@
 import { INIT_GAME, CLICK_TILE, AVAILABLE_MOVES} from '../actionTypes';
 import { INITIAL_STATE } from '../../constants';
 import {
-    initializeLevel, addSelectedOneMove, findClusters,
-    resolveOneCluster, shiftTiles
+    initializeLevel, clickTile, availableMoves
 } from '../../resources/functions'
 
 const initialState =  INITIAL_STATE;
@@ -22,46 +21,23 @@ export default function(state = initialState, action){
 
         case CLICK_TILE: {
             const content = action.payload;
-            let solved = true
-            console.log('Click Tile!')
             let selectedPrevious = content.selected;
-            let newTiles=null;
 
-            if(!selectedPrevious)//if user selected
-                newTiles = addSelectedOneMove(content.col, content.row, true, state.tiles)
-            else
-                newTiles = addSelectedOneMove(content.col, content.row, false, state.tiles)
-
-            let clusters = findClusters(newTiles)
-            if (clusters.length>0)
-                solved = false
+            let { newTiles, solved } = clickTile(state.tiles, content.col, content.row, selectedPrevious)
 
             return {
                 tiles: newTiles,
-                solved: false
+                solved: solved
             }
         }
         //Action to check if there are more moves
         case AVAILABLE_MOVES:{
-            //TODO: create a function in functions.js and refactor
-            let clusters = findClusters(state.tiles)
-            let solved = true
+            let { newTiles, solved } = availableMoves(state.tiles)
 
-            if (clusters.length > 0){
-                let newTiles = shiftTiles(state.tiles)
-                clusters = findClusters(newTiles)
-                if (clusters.length > 0){
-                    newTiles = resolveOneCluster(newTiles, clusters)
-                    solved = false
-                }
-
-                return {
-                    tiles: newTiles,
-                    solved: solved
-                }
+            return {
+                tiles: newTiles,
+                solved: solved
             }
-            //Is returning null the correct as to have no effect
-            return {tiles: state.tiles}
         }
 
         default: {
