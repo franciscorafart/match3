@@ -11,13 +11,13 @@ const initGame = (state = initialState, action) => {
     switch (action.type) {
         case INIT_GAME: {
             console.log('initGame state!: ', state)
-            // let newTiles = initializeLevel(state)
-            //
-            // return {
-            //     ...state,
-            //     tiles: newTiles,
-            //     solved: true
-            // }
+            let newTiles = initializeLevel(state)
+
+            return {
+                ...state,
+                tiles: newTiles,
+                solved: true
+            }
         }
 
         case CLICK_TILE: {

@@ -26,6 +26,8 @@ app.post('/initializeLevel', (req, res) => {
     //TODO: Dispatch action
     store.dispatch({type:'INIT_GAME'})
 
+    //TODO: Figure out how to send state back
+
     console.log('/initializeLevel endpoint')
     res.send('Connected!')
 })
