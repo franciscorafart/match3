@@ -11,14 +11,30 @@ export default function(state = initialState, action){
     switch (action.type) {
         case INIT_GAME: {
 
+            //NOTE: apparely Redux-sage middleware is needed to make
+            //manage side effects and asyncronous request in Redux.
+
             //fetch request
             fetch('/initializeLevel',{
                 method:'post',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({})
             })
-            .then(res => console.log('res from backend: ', res))
+            .then(res => {
+                if (res.status != 200){
+                    console.log('error in request')
+                    return
+                }
 
+                res.json().then( data => {
+                    console.log('data', data)
+                });
+
+            }).catch(err => {
+                console.log('catched error!')
+            });
+
+            //Original code (working)
             let newTiles = initializeLevel(state)
 
             return {

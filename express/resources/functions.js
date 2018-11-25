@@ -5,15 +5,15 @@ let secTls = []
 let rownum = 0
 let colnum = 0
 
-// export const tilecolors = [
-//     [255, 128, 128],
-//     [128, 255, 128],
-//     [128, 128, 255],
-//     [255, 255, 128],
-//     [255, 128, 255],
-//     [128, 255, 255],
-//     [255, 255, 255]
-// ]
+const tilecolors = [
+    [255, 128, 128],
+    [128, 255, 128],
+    [128, 128, 255],
+    [255, 255, 128],
+    [255, 128, 255],
+    [128, 255, 255],
+    [255, 255, 255]
+]
 
 const getRandomTile = () => {
     return Math.floor(Math.random() * tilecolors.length)

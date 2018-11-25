@@ -10,7 +10,6 @@ const initialState =  INITIAL_STATE;
 const initGame = (state = initialState, action) => {
     switch (action.type) {
         case INIT_GAME: {
-            console.log('initGame state!: ', state)
             let newTiles = initializeLevel(state)
 
             return {

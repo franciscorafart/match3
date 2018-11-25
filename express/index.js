@@ -15,6 +15,7 @@ app.listen(process.env.port || 8000, () => {
 });
 
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
 
 app.post('/clickTile', (req, res) => {
     let message = req.body
@@ -26,8 +27,10 @@ app.post('/initializeLevel', (req, res) => {
     //TODO: Dispatch action
     store.dispatch({type:'INIT_GAME'})
 
-    //TODO: Figure out how to send state back
-
-    console.log('/initializeLevel endpoint')
-    res.send('Connected!')
+    let state = store.getState()
+    let response = JSON.stringify(state)
+    res.send(response)
 })
+
+//Function that subscribes to state change
+// const unsubscribe = store.subscribe(() => console.log('state changed: ',store.getState()))
