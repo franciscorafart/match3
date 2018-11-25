@@ -10,12 +10,9 @@ let db;
 
 app.listen(process.env.port || 8000, () => {
     console.log('Runing on port 8000');
-
-    //create state
 });
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
 
 app.post('/clickTile', (req, res) => {
     let message = req.body
