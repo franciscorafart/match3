@@ -294,8 +294,8 @@ const addSelected = (col, row, addBool, tiles) => {
 }
 
 const addSelectedOneMove = (col, row, addBool, tiles) => {
-
-    let locTiles = tiles
+    //TODO: Make sure that it is working fine
+    let locTiles = List(tiles)
     locTiles = locTiles.setIn([col,row,'selected'],addBool)
 
     if (countSelected(locTiles) === 2){

@@ -15,13 +15,17 @@ app.listen(process.env.port || 8000, () => {
 app.use(bodyParser.json())
 
 app.post('/clickTile', (req, res) => {
-    let message = req.body
-    console.log('Message is: ', message)
+    let payload = req.body
+
+    store.dispatch({type: 'CLICK_TILE', payload: payload})
+
+    let state = store.getState()
+    let response = JSON.stringify(state)
+    res.send(response)
 })
 
 app.post('/initializeLevel', (req, res) => {
 
-    //TODO: Dispatch action
     store.dispatch({type:'INIT_GAME'})
 
     let state = store.getState()

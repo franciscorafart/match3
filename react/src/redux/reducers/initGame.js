@@ -48,6 +48,31 @@ export default function(state = initialState, action){
             const content = action.payload;
             let selectedPrevious = content.selected;
 
+            fetch('/clickTile',{
+                method:'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    tiles: state.tiles,
+                    column: content.col,
+                    row: content.row,
+                    selected: selectedPrevious
+                })
+            })
+            .then(res => {
+                if (res.status != 200){
+                    console.log('error in request')
+                    return
+                }
+
+                res.json().then( data => {
+                    console.log('data', data)
+                });
+
+            }).catch(err => {
+                console.log('catched error!')
+            });
+
+            //Front end code
             let { newTiles, solved } = clickTile(state.tiles, content.col, content.row, selectedPrevious)
 
             return {
