@@ -6,7 +6,7 @@ const app = express();
 let store = require('./redux/store');
 
 let db;
-//TODO: connect to db to connect
+//TODO: connect to db
 
 app.listen(process.env.port || 8000, () => {
     console.log('Runing on port 8000');

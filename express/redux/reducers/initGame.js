@@ -21,7 +21,6 @@ const initGame = (state = initialState, action) => {
 
         case CLICK_TILE: {
             const content = action.payload;
-            // console.log('content: ', content)
 
             let { newTiles, solved } = clickTile(content.tiles, content.col, content.row, content.selected)
 
