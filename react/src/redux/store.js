@@ -1,7 +1,10 @@
 import { createStore , applyMiddleware} from 'redux';
 import rootReducer from './reducers'
 import createSagaMiddleware from 'redux-saga'
-import { watchInitializeLevel } from './sagas'
+import {
+    watchInitializeLevel,
+    watchClickTile
+} from './sagas'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -10,6 +13,7 @@ export default createStore(
     applyMiddleware(sagaMiddleware)
 );
 
-//NOTE: Does this go here?
+//Action watcher
 sagaMiddleware.run(watchInitializeLevel)
-// const action = type => store.dispatch({type})
+sagaMiddleware.run(watchClickTile)
+//TODO: add click_tile and others

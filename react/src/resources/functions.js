@@ -77,7 +77,10 @@ export const initializeLevel = (state) => {
 }
 
 export const getMyColor = (x,y,tiles) => {
-    let type = tiles.getIn([x,y,'type'])
+    // for old immutable JS
+    // let type = tiles.getIn([x,y,'type'])
+
+    let type = tiles[x][y].type
 
     //Empty one (black)
     if (type === -1)

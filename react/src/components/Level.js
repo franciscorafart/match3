@@ -2,16 +2,12 @@ import React, { Component } from 'react';
 import { getMyColor } from '../resources/functions';
 import Tile from './Tile'
 
-import { initGame, checkAvailableMoves } from '../redux/actions';
-
+import { initGameAction, initGame } from '../redux/actions';
 import { connect } from 'react-redux';
 
 class Level extends Component {
     componentDidUpdate(){
-        //If the board isn't solved, trigger to check empty spaces
-        if (!this.props.solved){
-            let timeout = setTimeout(this.props.checkAvailableMoves, 1200)
-        }
+        //TODO: check from array of states returnes if its solved, if not animate
     }
 
     render(){
@@ -27,8 +23,8 @@ class Level extends Component {
 
         return (
             <div>
-                <button onClick={() => this.props.initGame()}>Init Level</button>
-                <button onClick={() => this.props.checkAvailableMoves()}>Next match</button>
+                <button onClick={() => this.props.initGameAction()}>Init Level</button>
+                // <button onClick={() => this.props.checkAvailableMoves()}>Next match</button>
                 <div
                     className="level"
                     style={divStyle}
@@ -50,9 +46,9 @@ class Level extends Component {
                                                 row={rowIdx}
                                                 myColor={getMyColor(colIdx, rowIdx, this.props.tiles)}
                                                 key={'('+colIdx+','+rowIdx+')'}
-                                                selected={row.get('selected')}
+                                                selected ={row.selected}
                                                 solved={this.props.solved}
-                                                type={row.get('type')}
+                                                type={row.type}
                                             />
                                     )
                                 }
@@ -84,5 +80,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
     mapStateToProps, //this is the mapStateToProps argument
-    { initGame, checkAvailableMoves }
+    { initGameAction }
 )(Level);

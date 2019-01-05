@@ -1,7 +1,27 @@
-import { CLICK_TILE, INIT_GAME, AVAILABLE_MOVES } from './actionTypes';
+import {
+    INIT_GAME,
+    INIT_GAME_ACTION,
+    CLICK_TILE,
+    CLICK_TILE_ACTION,
+    AVAILABLE_MOVES
+} from './actionTypes';
 
+export const initGameAction = content => ({
+    type: INIT_GAME_ACTION
+})
+export const initGame = content => ({
+    type: INIT_GAME,
+    payload: {
+        tiles: content.tiles
+    }
+})
+
+export const clickTileAction = content => ({
+    type: CLICK_TILE_ACTION,
+    //Try this out
+    payload: content
+})
 //referece for each iteration of the board
-
 export const clickTile = content => ({
     type: CLICK_TILE,
     payload: {
@@ -10,13 +30,6 @@ export const clickTile = content => ({
         selected: content.selected,
     }
 });
-
-export const initGame = content => ({
-    type: INIT_GAME,
-    // payload: {
-    //     tiles: content.tiles
-    // }
-})
 
 export const checkAvailableMoves = content => ({
     type: AVAILABLE_MOVES,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { clickTile } from '../redux/actions';
+import { clickTile, clickTileAction } from '../redux/actions';
 import { connect } from 'react-redux';
 import explosion_png from '../resources/explosion.png'
 import bomb from '../resources/bomb.mp3'
@@ -16,7 +16,8 @@ class Tile extends Component {
     }
 
     clicked(e){
-        this.props.clickTile(
+        console.log('clicked!')
+        this.props.clickTileAction(
             {
                 col: this.props.col,
                 row: this.props.row,
@@ -77,5 +78,5 @@ class Tile extends Component {
 
 export default connect(
     null,
-    { clickTile }
+    { clickTileAction }
 )(Tile);
