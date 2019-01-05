@@ -13,6 +13,9 @@ export const clickTile = content => ({
 
 export const initGame = content => ({
     type: INIT_GAME,
+    // payload: {
+    //     tiles: content.tiles
+    // }
 })
 
 export const checkAvailableMoves = content => ({
