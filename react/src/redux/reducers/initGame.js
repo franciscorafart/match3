@@ -26,27 +26,32 @@ export default function(state = initialState, action){
             return {
                 ...state,
                 tiles: content.tiles,
-                solved: true
+                solved: true,
             }
         }
         case CLICK_TILE_ACTION: {
-            const content = action.payload
             return {
                 ...state
             }
         }
         case CLICK_TILE: {
-
             //TODO: Take this to the backend
             const content = action.payload;
-            let selectedPrevious = content.selected;
-            
-            //Front end code
-            let { newTiles, solved } = clickTile(state.tiles, content.col, content.row, selectedPrevious)
+            console.log('content in CLICK_TILE initGame.js', content)
+            // let selectedPrevious = content.selected;
 
+            //Front end code
+            // let { newTiles, solved } = clickTile(state.tiles, content.col, content.row, selectedPrevious)
+            //
+            // return {
+            //     tiles: newTiles,
+            //     solved: solved
+            // }
             return {
-                tiles: newTiles,
-                solved: solved
+                ...state,
+                tiles: content.tiles,
+                solved: content.solved,
+                sequence: content.sequence
             }
         }
         //Action to check if there are more moves

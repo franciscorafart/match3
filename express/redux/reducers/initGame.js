@@ -21,12 +21,15 @@ const initGame = (state = initialState, action) => {
 
         case CLICK_TILE: {
             const content = action.payload;
-
-            let { newTiles, solved } = clickTile(content.tiles, content.col, content.row, content.selected)
+            console.log('content: ', content)
+            let { newTiles, solved, sequence } = clickTile(state.tiles, content.col, content.row, content.selected)
+            // console.log('newTiles: ', newTiles, ', solved: ', solved, ', sequence: ', sequence)
 
             return {
                 tiles: newTiles,
-                solved: solved
+                solved: solved,
+                //TODO: add sequence of board
+                sequence: sequence
             }
         }
         //Action to check if there are more moves

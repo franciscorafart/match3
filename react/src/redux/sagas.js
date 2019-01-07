@@ -1,6 +1,6 @@
 import { takeEvery } from 'redux-saga'
 import { put, call } from 'redux-saga/effects'
-import { initGame } from './actions'
+import { initGame, clickTile } from './actions'
 
 export function* watchInitializeLevel() {
     yield takeEvery('INIT_GAME_ACTION', initializeLevelAsync);
@@ -36,17 +36,22 @@ function* clickTileAsync(payload) {
     console.log('clickTileAsync payload: ', payload)
     try {
         const selectedPrevious = payload.selected
-        fetch('/clickTile',{
-            method:'post',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                // tiles: state.tiles,
-                // column: payload.col,
-                // row: payload.row,
-                // selected: selectedPrevious
-            })
-        })
-        .then(res => res.json())
+        const data = yield call(()=> {
+            return fetch('/clickTile',{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify({
+                    col: payload.col,
+                    row: payload.row,
+                    selected: selectedPrevious
+                })
+            }).then(res => res.json())
+        });
+        console.log('data in clickTileAsync', data)
+        yield put(clickTile(data.initGame))
     } catch {
         console.log('Error clickTileAsync')
     }

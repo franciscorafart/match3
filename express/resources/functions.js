@@ -46,8 +46,13 @@ const initLevel = () => {
     let done = false;
     let locTiles = tiles
 
+    // let resolvedTiles = null;
+    // let sequence = []
+
     while(!done){
         locTiles = tiles
+        let sequence = null
+
 
         for (let i of range(colnum)){
             for (let j of range(rownum)){
@@ -55,7 +60,11 @@ const initLevel = () => {
             }
         }
 
-        locTiles = resolveClusters(locTiles)
+        let result = resolveClusters(locTiles)
+        // let { resolvedTiles, sequence } = resolveClusters(locTiles)
+
+        locTiles = result.resolvedTiles
+        sequence = result.sequence
         let moves = findMoves(locTiles)
 
         if (moves.length > 0){
@@ -91,14 +100,17 @@ const initializeLevel = (state) => {
 const resolveClusters = (tiles) => {
     let locTiles = tiles
     let clusters = findClusters(locTiles)
+    let sequence = []
 
     while (clusters.length>0){
+        sequence.unshift(locTiles)
+
         locTiles = removeClusters(locTiles, clusters)
         locTiles = shiftTiles(locTiles)
         clusters = findClusters(locTiles)
     }
-
-    return locTiles
+    //TODO: return the sequence as well
+    return {resolvedTiles: locTiles, sequence: sequence}
 }
 
 const resolveOneCluster = (tiles) => {
@@ -284,13 +296,19 @@ const findMoves = (tiles) => {
 const addSelected = (col, row, addBool, tiles) => {
 
     let locTiles = tiles
+    // let resolvedTiles = null;
+    let sequence = null
+
     locTiles = locTiles.setIn([col,row,'selected'],addBool)
 
     if (countSelected(locTiles) === 2){
-        locTiles = playMoves(locTiles)
+        let result = playMoves(locTiles)
+        // let { resolvedTiles, sequence } = playMoves(locTiles)
+        locTiles = result.resolvedTiles
+        sequence = result.sequence
     }
 
-    return locTiles
+    return { newTiles: locTiles, sequence: sequence }
 }
 
 const addSelectedOneMove = (col, row, addBool, tiles) => {
@@ -322,6 +340,7 @@ const isValidMove = (c1,r1,c2,r2, tiles) => {
 const playMoves = (tiles) => {
     let resolvedTiles = tiles;
     let isValid = isValidMove(secTls[0][0],secTls[0][1],secTls[1][0],secTls[1][1],resolvedTiles)
+    let sequence = null
 
         if (isValid){
             resolvedTiles = swap(
@@ -331,13 +350,16 @@ const playMoves = (tiles) => {
                 secTls[1][1],
                 resolvedTiles
             )
-            resolvedTiles = resolveClusters(resolvedTiles)
+            let result = resolveClusters(resolvedTiles)
+            // let { resolvedTiles, sequence } = resolveClusters(resolvedTiles)
+            sequence = result.sequence
+            resolvedTiles = result.resolvedTiles
         }
 
         //reset all selected if valid or not valid
         resolvedTiles = resetAllSelected(resolvedTiles)
 
-    return resolvedTiles
+    return { resolvedTiles: resolvedTiles, sequence: sequence}
 }
 
 const playOneMove = (tiles) => {
@@ -403,19 +425,23 @@ const printableTiles = (mess, tiles) => {
 
 const clickTile = (tiles, col, row, selectedPrevious) => {
     let solved = true
-    let newTiles = null
+    let result = null;
+    // let newTiles = null
+
     if (!selectedPrevious)
-        newTiles = addSelectedOneMove(col, row, true, tiles)
+        result = addSelected(col, row, true, tiles)
     else
-        newTiles = addSelectedOneMove(col, row, false, tiles)
+        result = addSelected(col, row, false, tiles)
 
-    let clusters = findClusters(newTiles)
-    if (clusters.length>0)
-        solved=false
-
+    let newTiles = result.newTiles
+    let sequence = result.sequence
+    // let clusters = findClusters(newTiles)
+    // if (clusters.length>0)
+    //     solved=false
     return {
         newTiles: newTiles,
-        solved: solved
+        solved: solved,
+        sequence: sequence
     }
 }
 
