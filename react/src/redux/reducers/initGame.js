@@ -40,13 +40,6 @@ export default function(state = initialState, action){
             console.log('content in CLICK_TILE initGame.js', content)
             // let selectedPrevious = content.selected;
 
-            //Front end code
-            // let { newTiles, solved } = clickTile(state.tiles, content.col, content.row, selectedPrevious)
-            //
-            // return {
-            //     tiles: newTiles,
-            //     solved: solved
-            // }
             return {
                 ...state,
                 tiles: content.tiles,

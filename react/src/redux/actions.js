@@ -26,10 +26,10 @@ export const clickTile = content => ({
     type: CLICK_TILE,
     payload: {
         tiles: content.tiles,
-        sequence: content.sequence
-        // col: content.col,
-        // row: content.row,
-        // selected: content.selected,
+        sequence: content.sequence,
+        col: content.col,
+        row: content.row,
+        selected: content.selected,
 
     }
 });

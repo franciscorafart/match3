@@ -1,5 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+let bodyParser = require('body-parser');
 let { availableMoves, clickTile, initializeLevel } = require('./resources/functions');
 const redux = require('redux');
 const app = express();
@@ -13,14 +13,11 @@ app.listen(process.env.port || 8000, () => {
 });
 
 app.use(bodyParser.json())
-// app.use(express.bodyParser())
 
 app.post('/clickTile', (req, res) => {
 
     //TODO: not getting payload from the front end
     let payload = req.body
-    // console.log('request: ', res)
-    console.log('body payload: ', payload)
 
     store.dispatch({type: 'CLICK_TILE', payload: payload})
 

@@ -33,26 +33,31 @@ function* initializeLevelAsync() {
 }
 
 function* clickTileAsync(payload) {
-    console.log('clickTileAsync payload: ', payload)
+    const selectedPrevious = payload.payload.selected
+    let object = {
+        col: payload.payload.col,
+        row: payload.payload.row,
+        selected: selectedPrevious
+    }
+    let body = JSON.stringify(object)
+
+    let fetchData = async () => {
+        const response = await fetch('/clickTile',{
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: body
+        })
+        const data = await response.json()
+        return data
+    }
+
     try {
-        const selectedPrevious = payload.selected
-        const data = yield call(()=> {
-            return fetch('/clickTile',{
-                method:'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                },
-                body: JSON.stringify({
-                    col: payload.col,
-                    row: payload.row,
-                    selected: selectedPrevious
-                })
-            }).then(res => res.json())
-        });
-        console.log('data in clickTileAsync', data)
+        const data = yield call(fetchData)
         yield put(clickTile(data.initGame))
-    } catch {
-        console.log('Error clickTileAsync')
+    } catch (e){
+        console.log('Error clickTileAsync: ', e)
     }
 }
