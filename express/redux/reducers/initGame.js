@@ -25,12 +25,10 @@ const initGame = (state = initialState, action) => {
             const content = action.payload;
             console.log('content: ', content)
             let { newTiles, solved, sequence } = clickTile(state.tiles, content.col, content.row, content.selected)
-            // console.log('newTiles: ', newTiles, ', solved: ', solved, ', sequence: ', sequence)
 
             return {
                 tiles: newTiles,
                 solved: solved,
-                //TODO: add sequence of board
                 sequence: sequence
             }
         }
