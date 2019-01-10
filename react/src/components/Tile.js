@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { clickTile, clickTileAction } from '../redux/actions';
 import { connect } from 'react-redux';
 import explosion_png from '../resources/explosion.png'
-import bomb from '../resources/bomb.mp3'
+
 
 class Tile extends Component {
     constructor(props){
@@ -52,8 +52,6 @@ class Tile extends Component {
             }
             explosion = <div style={divImgStyle}>
                             <img style={imgStyle} src={explosion_png}/>
-                            <audio src={bomb} autoplay='true' type="audio/mp3">
-                            </audio>
                         </div>
         }
 

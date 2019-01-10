@@ -7,9 +7,7 @@ import {
 } from '../actionTypes';
 
 import { INITIAL_STATE } from '../../constants';
-import {
-    initializeLevel, clickTile, availableMoves
-} from '../../resources/functions'
+
 
 const initialState =  INITIAL_STATE;
 
@@ -35,10 +33,8 @@ export default function(state = initialState, action){
             }
         }
         case CLICK_TILE: {
-            //TODO: Take this to the backend
             const content = action.payload;
-            console.log('content in CLICK_TILE initGame.js', content)
-            // let selectedPrevious = content.selected;
+            // console.log('content in CLICK_TILE initGame.js', content)
 
             return {
                 ...state,
@@ -47,15 +43,16 @@ export default function(state = initialState, action){
                 sequence: content.sequence
             }
         }
-        //Action to check if there are more moves
-        case AVAILABLE_MOVES:{
-            let { newTiles, solved } = availableMoves(state.tiles)
 
-            return {
-                tiles: newTiles,
-                solved: solved
-            }
-        }
+        //Action to check if there are more moves
+        // case AVAILABLE_MOVES:{
+        //     let { newTiles, solved } = availableMoves(state.tiles)
+        //
+        //     return {
+        //         tiles: newTiles,
+        //         solved: solved
+        //     }
+        // }
 
         default: {
             return state;

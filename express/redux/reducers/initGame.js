@@ -10,7 +10,9 @@ const initialState =  INITIAL_STATE;
 const initGame = (state = initialState, action) => {
     switch (action.type) {
         case INIT_GAME: {
-            let newTiles = initializeLevel(state)
+            // NOTE: Initialize with initialState instead of state so that setInterval(function () {
+            // can be reinitialized without restarting server
+            let newTiles = initializeLevel(initialState)
 
             return {
                 ...state,

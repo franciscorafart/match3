@@ -7,7 +7,7 @@ export function* watchInitializeLevel() {
 }
 
 export function* watchClickTile() {
-    console.log('CLICK_TILE_ACTION')
+    // console.log('CLICK_TILE_ACTION')
     yield takeEvery('CLICK_TILE_ACTION', clickTileAsync)
 }
 
@@ -21,10 +21,6 @@ function* initializeLevelAsync() {
             }).then(res => res.json())
         });
 
-        //NOTE: The user action from the actual process must be separated
-        //so that there's no loop
-
-        //TODO: transform sent array into list
         yield put(initGame(data.initGame))
 
     } catch (error) {

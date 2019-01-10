@@ -18,7 +18,6 @@ export const initGame = content => ({
 
 export const clickTileAction = content => ({
     type: CLICK_TILE_ACTION,
-    //Try this out
     payload: content
 })
 //referece for each iteration of the board
