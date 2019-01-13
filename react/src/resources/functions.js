@@ -9,8 +9,6 @@ export const tilecolors = [
 ]
 
 export const getMyColor = (x,y,tiles) => {
-    // for old immutable JS
-    // let type = tiles.getIn([x,y,'type'])
 
     let type = tiles[x][y].type
 

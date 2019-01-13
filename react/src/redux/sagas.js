@@ -7,7 +7,6 @@ export function* watchInitializeLevel() {
 }
 
 export function* watchClickTile() {
-    // console.log('CLICK_TILE_ACTION')
     yield takeEvery('CLICK_TILE_ACTION', clickTileAsync)
 }
 

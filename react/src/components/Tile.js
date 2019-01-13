@@ -16,7 +16,6 @@ class Tile extends Component {
     }
 
     clicked(e){
-        console.log('clicked!')
         this.props.clickTileAction(
             {
                 col: this.props.col,

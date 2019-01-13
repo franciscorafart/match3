@@ -16,12 +16,9 @@ app.use(bodyParser.json())
 
 app.post('/clickTile', (req, res) => {
 
-    //TODO: not getting payload from the front end
     let payload = req.body
 
     store.dispatch({type: 'CLICK_TILE', payload: payload})
-
-    //TODO: Figure out how to return several states
 
     let state = store.getState()
     let response = JSON.stringify(state)
