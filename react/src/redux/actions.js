@@ -3,7 +3,6 @@ import {
     INIT_GAME_ACTION,
     CLICK_TILE,
     CLICK_TILE_ACTION,
-    AVAILABLE_MOVES
 } from './actionTypes';
 
 export const initGameAction = content => ({
@@ -32,7 +31,3 @@ export const clickTile = content => ({
 
     }
 });
-
-export const checkAvailableMoves = content => ({
-    type: AVAILABLE_MOVES,
-})

@@ -24,7 +24,6 @@ class Level extends Component {
         return (
             <div>
                 <button onClick={() => this.props.initGameAction()}>Init Level</button>
-                // <button onClick={() => this.props.checkAvailableMoves()}>Next match</button>
                 <div
                     className="level"
                     style={divStyle}
@@ -62,9 +61,7 @@ class Level extends Component {
   }
 }
 
-//TODO: this state to props
 const mapStateToProps = (state) => {
-    // console.log('state', state)
     const { initGame } = state
     const { tiles, tilewidth, tileheight, columns, rows, solved } = initGame;
 

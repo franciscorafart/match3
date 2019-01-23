@@ -16,4 +16,3 @@ export default createStore(
 //Action watcher
 sagaMiddleware.run(watchInitializeLevel)
 sagaMiddleware.run(watchClickTile)
-//TODO: add click_tile and others
