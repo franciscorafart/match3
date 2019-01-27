@@ -1,6 +1,6 @@
 const express = require('express');
 let bodyParser = require('body-parser');
-let { availableMoves, clickTile, initializeLevel } = require('./resources/functions');
+let { clickTile, initializeLevel } = require('./resources/functions');
 const redux = require('redux');
 const app = express();
 let store = require('./redux/store');

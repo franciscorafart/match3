@@ -1,7 +1,8 @@
-# Match 3 Readme
+
+# Match 3 - React and Redux backend
 
 - Intro
-This game is built as two separate applications. A backend express application and a front-end react application. They're both on a same repository but are totally separate.
+This is a match 3 style game built as two separate applications. A backend express application built with Redux and Redux saga to handle state on the backend and a front-end react application to display the game. They're both on a same repository but are totally separate.
 
 - How to run
 1. Pull the code.

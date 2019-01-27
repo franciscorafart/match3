@@ -1,4 +1,4 @@
-const { INIT_GAME, CLICK_TILE, AVAILABLE_MOVES} = require('../actionTypes');
+const { INIT_GAME, CLICK_TILE } = require('../actionTypes');
 const { INITIAL_STATE } = require('../../constants');
 const {
     initializeLevel, clickTile, availableMoves
@@ -10,7 +10,7 @@ const initialState =  INITIAL_STATE;
 const initGame = (state = initialState, action) => {
     switch (action.type) {
         case INIT_GAME: {
-            // NOTE: Initialize with initialState instead of state so that setInterval(function () {
+            // NOTE: Initialize with initialState instead of 'state' so that game
             // can be reinitialized without restarting server
             let newTiles = initializeLevel(initialState)
 
@@ -30,15 +30,6 @@ const initGame = (state = initialState, action) => {
                 tiles: newTiles,
                 solved: solved,
                 sequence: sequence
-            }
-        }
-        //Action to check if there are more moves
-        case AVAILABLE_MOVES:{
-            let { newTiles, solved } = availableMoves(state.tiles)
-
-            return {
-                tiles: newTiles,
-                solved: solved
             }
         }
 
