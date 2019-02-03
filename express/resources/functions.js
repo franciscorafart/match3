@@ -104,7 +104,6 @@ const resolveClusters = (tiles) => {
 const resolveOneCluster = (tiles) => {
     let locTiles = tiles
     let clusters = findClusters(locTiles)
-    console.log('clusters length in resolveOneCluster: ', clusters.length)
 
     if (clusters.length >= 0)
         locTiles = removeClusters(locTiles, clusters)
@@ -281,9 +280,7 @@ const findMoves = (tiles) => {
 }
 
 const addSelected = (col, row, addBool, tiles) => {
-
     let locTiles = tiles
-    // let resolvedTiles = null;
     let sequence = null
 
     locTiles = locTiles.setIn([col,row,'selected'],addBool)
@@ -398,7 +395,7 @@ const resetAllSelected = (tiles) => {
     return locTiles
 }
 
-const printableTiles = (mess, tiles) => {
+const printableTiles = (tiles) => {
     let result = []
     for (let row of tiles.toArray()){
         let localVar = []
