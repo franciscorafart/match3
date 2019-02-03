@@ -1,4 +1,4 @@
-const { List } = require('immutable');
+const { List, Map } = require('immutable');
 
 const INITIAL_STATE = {
     x: 250,
@@ -11,6 +11,31 @@ const INITIAL_STATE = {
     solved: false
 }
 
+const solvedTiles = List ([
+    List ([ Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 0, "shifter": 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 3, "shifter": 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 6, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 0, "shifter": 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 3, "shifter": 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }), Map ({ type: 2, "shifter": 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 0, "shifter": 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 4, "shifter": 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 4, "shifter": 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }) ])
+])
+
+const unsolvedTiles = List ([
+    List ([ Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 0, "shifter": 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 3, "shifter": 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 0, "shifter": 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 3, "shifter": 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }), Map ({ type: 2, "shifter": 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 0, "shifter": 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }), Map ({ type: 4, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 4, "shifter": 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }) ]),
+    List ([ Map ({ type: 0, shifter: 0, selected: false }), Map ({ type: 3, shifter: 0, selected: false }), Map ({ type: 1, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }), Map ({ type: 4, "shifter": 0, selected: false }), Map ({ type: 6, shifter: 0, selected: false }), Map ({ type: 5, shifter: 0, selected: false }), Map ({ type: 2, shifter: 0, selected: false }) ])
+])
+
+
 module.exports = {
-    INITIAL_STATE: INITIAL_STATE
+    INITIAL_STATE: INITIAL_STATE,
+    solvedTiles: solvedTiles,
+    unsolvedTiles: unsolvedTiles
 }

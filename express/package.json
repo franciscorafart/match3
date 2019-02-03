@@ -4,9 +4,10 @@
   "description": "Express Backend for match 3",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "jest",
+    "test:watch": "npm test -- --watch"
   },
   "author": "Francisco Rafart",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "redux": "^4.0.1"
   },
   "devDependencies": {
+    "jest": "^24.0.0",
     "nodemon": "^1.18.6"
   }
 }
