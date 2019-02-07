@@ -85,6 +85,18 @@ const initializeLevel = (state) => {
     return tiles
 }
 
+// export const getMyColor = (x,y,tiles) => {
+//     let type = tiles.getIn([x,y,'type'])
+//
+//     //Empty one (black)
+//     if (type === -1)
+//         return [0,0,0]
+//
+//     let color = tileColors[type]
+//
+//     return color
+// }
+
 const resolveClusters = (tiles) => {
     let locTiles = tiles
     let clusters = findClusters(locTiles)
