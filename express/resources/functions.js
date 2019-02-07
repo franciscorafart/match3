@@ -5,7 +5,7 @@ let secTls = []
 let rownum = 0
 let colnum = 0
 
-const tilecolors = [
+const tileColors = [
     [255, 128, 128],
     [128, 255, 128],
     [128, 128, 255],
@@ -16,7 +16,7 @@ const tilecolors = [
 ]
 
 const getRandomTile = () => {
-    return Math.floor(Math.random() * tilecolors.length)
+    return Math.floor(Math.random() * tileColors.length)
 }
 
 const range = (x, i) =>{
