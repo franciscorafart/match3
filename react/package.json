@@ -36,7 +36,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "babel-eslint": "^9.0.0",
-    "babel-loader": "^8.0.4"
+    "babel-eslint": "^9.0.0"
   }
 }
