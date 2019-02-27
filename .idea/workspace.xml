@@ -2,10 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f8b861e9-0cd7-4a59-a741-b43a3f2ad72a" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/package-lock.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/react/src/organization_config.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/react/src/components/APILink.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/react/src/components/Sidebar.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/react/src/styles/components/Base.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/react/src/styles/components/SideBar.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/package.json" afterPath="$PROJECT_DIR$/react/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/src/App.css" afterPath="$PROJECT_DIR$/react/src/App.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/src/App.js" afterPath="$PROJECT_DIR$/react/src/App.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/src/organization_config.json" afterPath="$PROJECT_DIR$/react/src/organization_config.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/src/styles/components/Level.js" afterPath="$PROJECT_DIR$/react/src/styles/components/Level.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/react/src/styles/components/Tile.js" afterPath="$PROJECT_DIR$/react/src/styles/components/Tile.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -79,12 +85,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551986866027</updated>
-      <workItem from="1551986868302" duration="343000" />
+      <workItem from="1551986868302" duration="359000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="343000" />
+    <option name="totallyTimeSpent" value="359000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1440" height="819" extended-state="6" />

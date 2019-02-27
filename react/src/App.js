@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import './App.css';
+import { StyledApp, StyledAPIData } from './styles/components/Base';
 import Level from './components/Level';
+import Sidebar from './components/Sidebar'
 import Config from './organization_config.json';
 import SwaggerUI from 'swagger-ui';
-
+import '../node_modules/swagger-ui/dist/swagger-ui.css'
 
 class App extends Component {
   constructor(props) {
@@ -11,61 +12,67 @@ class App extends Component {
     this.state = {
       organizationConfig: null,
       definitionList: null,
-      definitionLink: "https://petstore.swagger.io/v2/swagger.json"
-    }
-    this.swaggerhub = this.swaggerhub.bind(this)
-    this.getOrganizationData = this.getOrganizationData.bind(this)
+      definitionLink: 'https://petstore.swagger.io/v2/swagger.json'
+    };
   }
 
   componentWillMount() {
-    this.setState({
-      organizationConfig:  Config.orgData,
-    })
+    this.setState(() => ({ organizationConfig: Config.orgData }));
   }
 
   componentDidMount() {
     SwaggerUI({
-      domNode: document.getElementById("api-data"),
+      domNode: document.getElementById('api-data'),
       url: this.state.definitionLink
-    })
+    });
   }
 
-  swaggerhub(inputMethod, inputResource, inputParams) {
-    let url = ""
+  swaggerhub = (inputMethod, inputResource, inputParams) => {
+    let url = '';
     if (inputParams) {
-      url = "https://api.swaggerhub.com/apis/" + inputResource + "?" + inputParams
+      url = 'https://api.swaggerhub.com/apis/' + inputResource + '?' + inputParams;
     } else {
-      url = "https://api.swaggerhub.com/apis/" + inputResource
+      url = 'https://api.swaggerhub.com/apis/' + inputResource;
     }
 
     return fetch(url, {
         method: inputMethod
     }).then(response => {
       if (response.ok) {
-        return response.json()
+        return response.json();
       } throw new Error('There was an issue requesting the API')
     }).then(json => {
-      return json
+      return json;
     })
-  }
+  };
 
-  getOrganizationData(organization) {
-    let inputParams = "page=0&limit=20&sort=NAME&order=ASC"
+  getOrganizationData = (organization) => {
+    let inputParams = 'page=0&limit=20&sort=NAME&order=ASC';
     let inputResource = organization;
 
     this.swaggerhub('GET', inputResource, inputParams).then(response => {
-      this.setState({
-        definitionList: response.apis
-      })
-    })
-  }
+      this.setState(() => ({ definitionList: response.apis }));
+    });
+  };
+
+  updateDefinitionLink = (newLink) => {
+    this.setState(() => ({ definitionLink: newLink }));
+  };
 
   render() {
     return (
-      <div className="App">
-        <Level/>
-        <div id="api-data" />
-      </div>
+      <StyledApp>
+        <Level />
+        <Sidebar
+          organizationConfig={this.state.organizationConfig}
+          definitionList={this.state.definitionList}
+          updateDefinitionLink={this.updateDefinitionLink}
+          getOrganizationData={this.getOrganizationData}
+        />
+        <StyledAPIData id='api-data' />
+      </StyledApp>
     );
   }
 }
+
+export default App;
