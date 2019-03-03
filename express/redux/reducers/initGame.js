@@ -1,7 +1,7 @@
 const { INIT_GAME, CLICK_TILE } = require('../actionTypes');
 const { INITIAL_STATE } = require('../../constants');
 const {
-    initializeLevel, clickTile, availableMoves, printableTiles, initGame
+    initializeLevel, clickTile, availableMoves, printableTiles,
 } = require('../../resources/functions');
 
 const initialState =  INITIAL_STATE;
