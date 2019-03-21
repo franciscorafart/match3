@@ -5,7 +5,7 @@ let secTls = []
 let rownum = 0
 let colnum = 0
 
-const tilecolors = [
+const tileColors = [
     [255, 128, 128],
     [128, 255, 128],
     [128, 128, 255],
@@ -16,7 +16,7 @@ const tilecolors = [
 ]
 
 const getRandomTile = () => {
-    return Math.floor(Math.random() * tilecolors.length)
+    return Math.floor(Math.random() * tileColors.length)
 }
 
 const range = (x, i) =>{
@@ -85,18 +85,6 @@ const initializeLevel = (state) => {
     return tiles
 }
 
-// export const getMyColor = (x,y,tiles) => {
-//     let type = tiles.getIn([x,y,'type'])
-//
-//     //Empty one (black)
-//     if (type === -1)
-//         return [0,0,0]
-//
-//     let color = tilecolors[type]
-//
-//     return color
-// }
-
 const resolveClusters = (tiles) => {
     let locTiles = tiles
     let clusters = findClusters(locTiles)
@@ -116,7 +104,6 @@ const resolveClusters = (tiles) => {
 const resolveOneCluster = (tiles) => {
     let locTiles = tiles
     let clusters = findClusters(locTiles)
-    console.log('clusters length in resolveOneCluster: ', clusters.length)
 
     if (clusters.length >= 0)
         locTiles = removeClusters(locTiles, clusters)
@@ -183,7 +170,6 @@ const findClusters = (tiles) => {
             }
         }
     }
-
     return clusters
 }
 
@@ -294,9 +280,7 @@ const findMoves = (tiles) => {
 }
 
 const addSelected = (col, row, addBool, tiles) => {
-
     let locTiles = tiles
-    // let resolvedTiles = null;
     let sequence = null
 
     locTiles = locTiles.setIn([col,row,'selected'],addBool)
@@ -411,7 +395,7 @@ const resetAllSelected = (tiles) => {
     return locTiles
 }
 
-const printableTiles = (mess, tiles) => {
+const printableTiles = (tiles) => {
     let result = []
     for (let row of tiles.toArray()){
         let localVar = []
@@ -462,12 +446,16 @@ const availableMoves = (tiles) => {
             solved: solved
         }
     }
-    return {tiles: tiles}
+    return {
+        tiles: tiles,
+        solved: solved
+    }
 }
 
 module.exports = {
     clickTile: clickTile,
     availableMoves: availableMoves,
     printableTiles: printableTiles,
-    initializeLevel: initializeLevel
+    initializeLevel: initializeLevel,
+    findClusters: findClusters
 }

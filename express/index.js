@@ -1,12 +1,11 @@
 const express = require('express');
 let bodyParser = require('body-parser');
-let { availableMoves, clickTile, initializeLevel } = require('./resources/functions');
+let { clickTile, initializeLevel } = require('./resources/functions');
 const redux = require('redux');
 const app = express();
 let store = require('./redux/store');
 
 let db;
-//TODO: connect to db
 
 app.listen(process.env.port || 8000, () => {
     console.log('Runing on port 8000');
@@ -16,12 +15,9 @@ app.use(bodyParser.json())
 
 app.post('/clickTile', (req, res) => {
 
-    //TODO: not getting payload from the front end
     let payload = req.body
 
     store.dispatch({type: 'CLICK_TILE', payload: payload})
-
-    //TODO: Figure out how to return several states
 
     let state = store.getState()
     let response = JSON.stringify(state)

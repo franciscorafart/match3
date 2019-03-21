@@ -1,4 +1,4 @@
-const { CLICK_TILE, INIT_GAME, AVAILABLE_MOVES } = require('./actionTypes');
+const { CLICK_TILE, INIT_GAME } = require('./actionTypes');
 
 //referece for each iteration of the board
 
@@ -15,12 +15,7 @@ const initGame = content => ({
     type: INIT_GAME,
 })
 
-const checkAvailableMoves = content => ({
-    type: AVAILABLE_MOVES,
-})
-
 module.exports = {
     initGame: initGame,
-    checkAvailableMoves: checkAvailableMoves,
     clickTile: clickTile
 }

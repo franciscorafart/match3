@@ -34,7 +34,6 @@ export default function(state = initialState, action){
         }
         case CLICK_TILE: {
             const content = action.payload;
-            // console.log('content in CLICK_TILE initGame.js', content)
 
             return {
                 ...state,
@@ -43,16 +42,6 @@ export default function(state = initialState, action){
                 sequence: content.sequence
             }
         }
-
-        //Action to check if there are more moves
-        // case AVAILABLE_MOVES:{
-        //     let { newTiles, solved } = availableMoves(state.tiles)
-        //
-        //     return {
-        //         tiles: newTiles,
-        //         solved: solved
-        //     }
-        // }
 
         default: {
             return state;

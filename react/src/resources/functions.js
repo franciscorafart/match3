@@ -1,24 +1,17 @@
-export const tilecolors = [
-    [255, 128, 128],
-    [128, 255, 128],
-    [128, 128, 255],
-    [255, 255, 128],
-    [255, 128, 255],
-    [128, 255, 255],
-    [255, 255, 255]
+const tileColors = [
+  [255, 128, 128],
+  [128, 255, 128],
+  [128, 128, 255],
+  [255, 255, 128],
+  [255, 128, 255],
+  [128, 255, 255],
+  [255, 255, 255]
 ]
 
 export const getMyColor = (x,y,tiles) => {
-    // for old immutable JS
-    // let type = tiles.getIn([x,y,'type'])
-
-    let type = tiles[x][y].type
-
-    //Empty one (black)
-    if (type === -1)
-        return [0,0,0]
-
-    let color = tilecolors[type]
-
-    return color
+  const type = tiles[x][y].type;
+   //Empty one (black)
+    if (type === -1) return [0,0,0];
+    const color = tileColors[type];
+    return color;
 }
